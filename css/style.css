@@ -40,8 +40,8 @@
 
 /* ------------------------------ Tokens ------------------------------- */
 :root {
-  /* Ground — tiefes Anthrazit */
-  --bg:          #14140f;
+  /* Ground — tiefes Anthrazit (TEST: temporär auf Pink gesetzt) */
+  --bg:          #ff69b4;
   --surface:     #1c1c17;
   --surface-2:   #26261f;
 
