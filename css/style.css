@@ -40,8 +40,8 @@
 
 /* ------------------------------ Tokens ------------------------------- */
 :root {
-  /* Ground — tiefes Anthrazit (TEST: temporär auf Blau gesetzt) */
-  --bg:          #1e5fd6;
+  /* Ground — tiefes Anthrazit, roh und maschinell */
+  --bg:          #14140f;
   --surface:     #1c1c17;
   --surface-2:   #26261f;
 
@@ -93,9 +93,17 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
+  /* Fallback für Anker-Sprünge, wenn JS/Lenis nicht läuft. */
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
+
+/* Sobald Lenis (JS-Smooth-Scroll) aktiv ist, natives Smooth-Scroll abschalten –
+   sonst laufen zwei Scroll-Systeme gegeneinander und es ruckelt. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
 
 body {
   margin: 0;
@@ -329,6 +337,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .main-nav__link:hover { color: var(--ink); }
 .main-nav__link:hover::after { transform: scaleX(1); }
+/* Aktive Seite: Unterstrich dauerhaft sichtbar, Text hervorgehoben */
+.main-nav__link[aria-current="page"] { color: var(--ink); }
+.main-nav__link[aria-current="page"]::after { transform: scaleX(1); }
 
 /* Burger */
 .nav-toggle {
@@ -364,6 +375,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   color: var(--ink);
 }
 .mobile-menu__link:hover { color: var(--primary-hi); }
+.mobile-menu__link[aria-current="page"] { color: var(--primary); }
 .mobile-menu .btn { width: 100%; }
 
 /* ------------------------------ Hero --------------------------------- */
@@ -390,6 +402,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   margin-bottom: var(--space-xl);
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-md); }
+
+/* Kopfzeile der Unterseiten – hält den fixen Header frei (Offset wie .hero) */
+.page-hero {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: calc(72px + var(--space-2xl)) clamp(1rem, 4vw, 2rem) var(--space-xl);
+}
 
 /* Foto-Platzhalter */
 .photo-frame {
@@ -667,6 +686,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   color: var(--ink-2);
 }
 .footer__nav a:hover { color: var(--primary-hi); }
+.footer__nav a[aria-current="page"] { color: var(--primary); }
 .footer__legal[aria-disabled="true"] { cursor: default; color: var(--muted); }
 .footer__note {
   max-width: var(--maxw);

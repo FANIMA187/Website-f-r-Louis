@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO: Region-Platzhalter [Region] vor Launch durch echte Region/Städte ersetzen -->
+  <title>Über uns – Ihr Einzelbetrieb für Erd- &amp; Tiefbau | L. Molitor [Region]</title>
+  <meta name="description" content="L. Molitor Erd- &amp; Tiefbau ist ein junger Einzelbetrieb: ein Ansprechpartner, ehrliche Handarbeit, persönlicher Kontakt vom Chef selbst – in [Region] und im Umkreis von 60 km.">
+  <meta name="theme-color" content="#14140f">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://molitor-bau.de/ueber-uns.html">
+
+  <!-- Open Graph (og:image folgt, sobald ein echtes Bild vorliegt) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:site_name" content="L. Molitor Erd- & Tiefbau">
+  <meta property="og:title" content="Über uns – L. Molitor Erd- & Tiefbau">
+  <meta property="og:description" content="Ein Betrieb, ein Ansprechpartner: ehrliche Handarbeit und persönlicher Kontakt vom Chef selbst.">
+  <meta property="og:url" content="https://molitor-bau.de/ueber-uns.html">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Display-Font vorab laden (Hero-Headline & Wortmarke) -->
+  <link rel="preload" href="assets/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Animations-Libraries per ESM Import Map (kein Build-Step). Laden vom CDN;
+       vor Launch im Datenschutz-Review berücksichtigen. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "gsap": "https://esm.sh/gsap@3.12.5",
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.12.5/ScrollTrigger",
+      "lenis": "https://esm.sh/lenis@1.1.14"
+    }
+  }
+  </script>
+
+  <!-- Lokale Suche: LocalBusiness. ACHTUNG Platzhalter – Adresse, Telefon, Geo
+       und Öffnungszeiten vor Launch mit echten, verifizierten Daten füllen. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "GeneralContractor",
+    "name": "L. Molitor Erd- & Tiefbau",
+    "description": "Einzelbetrieb für Erd- und Tiefbau: Aushub für Fundament, Pool und Hausbau, Pflaster-, Bagger- und Abbrucharbeiten.",
+    "url": "https://molitor-bau.de/",
+    "founder": "Louis Molitor",
+    "foundingDate": "2026-04-01",
+    "areaServed": {
+      "@type": "GeoCircle",
+      "geoRadius": "60000",
+      "description": "Umkreis von rund 60 km um [Standort]"
+    },
+    "knowsAbout": ["Erdarbeiten", "Tiefbau", "Baggerarbeiten", "Aushub", "Pflasterarbeiten", "Bodenplatten", "Abbruch", "Wegebau"]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ============ SVG-Icon-Sprite (Lucide/Tabler-Stil, MIT, eigen gezeichnet) ============ -->
+  <svg width="0" height="0" class="svg-sprite" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <!-- Marken-Symbol: stilisiertes Kettenlaufwerk (Bagger-Kette) -->
+      <symbol id="i-track" viewBox="0 0 32 32">
+        <rect x="2.5" y="9.5" width="27" height="13" rx="6.5"/>
+        <circle cx="10" cy="16" r="3.2"/>
+        <circle cx="22" cy="16" r="3.2"/>
+        <path d="M5 25.5h22" stroke-dasharray="1.5 2.6"/>
+      </symbol>
+      <!-- Leistungs-Icons -->
+      <symbol id="i-shovel" viewBox="0 0 24 24"><path d="M14 4l6 6"/><path d="M17 7l-8.5 8.5"/><path d="M11 12.5l-5 5a2.5 2.5 0 0 1-3.5-3.5l5-5"/><path d="M4 9h4v4"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+      <symbol id="i-excavator" viewBox="0 0 24 24"><path d="M3 20h13"/><circle cx="6.5" cy="20" r="1.6"/><circle cx="12.5" cy="20" r="1.6"/><path d="M4 17h11v-3H5z"/><path d="M12 14l1-5 5 2"/><path d="M18 11l3 4"/></symbol>
+      <symbol id="i-paving" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/></symbol>
+      <symbol id="i-slab" viewBox="0 0 24 24"><path d="M2 8l10-4 10 4-10 4-10-4z"/><path d="M2 8v4l10 4 10-4V8"/><path d="M12 12v8"/></symbol>
+      <symbol id="i-hammer" viewBox="0 0 24 24"><path d="M14 6l4 4"/><path d="M9 11l6-6 4 4-6 6z"/><path d="M11.5 13.5l-6 6a2.1 2.1 0 0 1-3-3l6-6"/></symbol>
+      <!-- Werte-Icons -->
+      <symbol id="i-hardhat" viewBox="0 0 24 24"><path d="M3 18h18"/><path d="M4 18a8 8 0 0 1 16 0"/><path d="M10 6.5V5a2 2 0 0 1 4 0v1.5"/><path d="M8 7.5a8.5 8.5 0 0 1 8 0"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5 11-11"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+      <symbol id="i-handshake" viewBox="0 0 24 24"><path d="M12 8l-2-1.5a2 2 0 0 0-2.3 0L3 9.5V16l3 2"/><path d="M12 8l2-1.5a2 2 0 0 1 2.3 0L21 9.5V16l-3 2"/><path d="M8 13l2.5 2.2a1.6 1.6 0 0 0 2.2 0L18 11"/></symbol>
+      <!-- Ablauf / Kontakt -->
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M8.5 11h7M8.5 15h5"/></symbol>
+      <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h11v9H2z"/><path d="M13 9h4l4 3v3h-8z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3h3l2 5-2.5 1.5a12 12 0 0 0 5 5L14 14l5 2v3a2 2 0 0 1-2 2A15 15 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
+      <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M4 20l1.4-4A8 8 0 1 1 9 19.5z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5.6 0 1-.4 1-1v-.8l-1.8-.8-.9.9a4.2 4.2 0 0 1-2-2l.9-.9L10 8.5H9.2c-.1 0-.2.5-.2 1z"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></symbol>
+      <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ============================== HEADER ============================== -->
+  <header class="site-header" data-header>
+    <div class="site-header__inner">
+      <a class="brand" href="index.html" aria-label="L. Molitor Erd- und Tiefbau – Startseite">
+        <span class="brand__mark" aria-hidden="true">
+          <svg class="icon icon--mark"><use href="#i-track"></use></svg>
+        </span>
+        <span class="brand__text">
+          <span class="brand__pre">Louis</span>
+          <span class="brand__name">Molitor</span>
+          <span class="brand__claim">Erd- &amp; Tiefbau</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <ul class="main-nav__list">
+          <li><a class="main-nav__link" href="leistungen.html">Leistungen</a></li>
+          <li><a class="main-nav__link" href="ueber-uns.html" aria-current="page">Über uns</a></li>
+          <li><a class="main-nav__link" href="ablauf.html">Ablauf</a></li>
+          <li><a class="main-nav__link" href="kontakt.html">Kontakt</a></li>
+        </ul>
+        <a class="btn btn--primary btn--sm" href="kontakt.html">Anfragen</a>
+      </nav>
+
+      <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
+        <svg class="icon"><use href="#i-menu"></use></svg>
+      </button>
+    </div>
+
+    <!-- Mobiles Overlay-Menü -->
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Menü" data-mobile-menu hidden>
+      <ul class="mobile-menu__list">
+        <li><a class="mobile-menu__link" href="leistungen.html">Leistungen</a></li>
+        <li><a class="mobile-menu__link" href="ueber-uns.html" aria-current="page">Über uns</a></li>
+        <li><a class="mobile-menu__link" href="ablauf.html">Ablauf</a></li>
+        <li><a class="mobile-menu__link" href="index.html#einzugsgebiet">Einzugsgebiet</a></li>
+        <li><a class="mobile-menu__link" href="kontakt.html">Kontakt</a></li>
+      </ul>
+      <a class="btn btn--primary" href="kontakt.html">Projekt anfragen</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============================ SEITEN-KOPF ============================ -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="section__head">
+        <p class="section__kicker" data-reveal>Über uns</p>
+        <h1 class="section__title" id="page-title" data-reveal>Ein Betrieb, ein Ansprechpartner</h1>
+        <p class="section__intro" data-reveal>
+          L. Molitor Erd- &amp; Tiefbau ist ein junger Einzelbetrieb – mit dem Anspruch,
+          ehrliche Handarbeit und persönlichen Kontakt an die erste Stelle zu setzen.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================= ÜBER UNS ============================= -->
+    <section class="section about" aria-label="Über den Betrieb">
+      <div class="about__grid">
+        <div class="about__media" data-reveal>
+          <!-- Porträt-Platzhalter: kein Stock-Gesicht, bis eigenes Foto vorliegt -->
+          <figure class="photo-frame photo-frame--portrait">
+            <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
+            <figcaption class="photo-frame__label">
+              <span class="photo-frame__tag">Foto folgt</span>
+              <span class="photo-frame__hint">Porträt Louis Molitor</span>
+            </figcaption>
+          </figure>
+          <p class="about__name"><strong>Louis Molitor</strong> · Inhaber</p>
+        </div>
+
+        <div class="about__body">
+          <p data-reveal>
+            L. Molitor Erd- &amp; Tiefbau ist ein junger Einzelbetrieb – gegründet aus dem
+            Wunsch, ehrliche Handarbeit mit der eigenen Maschine zu leisten und etwas
+            Eigenes aufzubauen.
+          </p>
+          <p data-reveal>
+            Der Vorteil für Sie: Sie sprechen direkt mit dem Mann, der die Arbeit macht.
+            Kein Callcenter, keine Warteschleife, keine Missverständnisse über drei Ecken.
+            Sie schildern Ihr Vorhaben, wir schauen es uns gemeinsam an, und Sie bekommen
+            eine klare, ehrliche Einschätzung.
+          </p>
+          <p data-reveal>
+            Frisch gegründet heißt für uns vor allem eins: volle Motivation, saubere Arbeit
+            und der Anspruch, jeden Auftrag so abzuliefern, dass Sie uns weiterempfehlen.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== WARUM MOLITOR =========================== -->
+    <section class="section why" aria-labelledby="why-title">
+      <div class="section__head">
+        <p class="section__kicker" data-reveal>Warum Molitor</p>
+        <h2 class="section__title" id="why-title" data-reveal>Worauf Sie sich verlassen können</h2>
+      </div>
+
+      <ul class="why-grid">
+        <li class="why-item" data-reveal>
+          <svg class="why-item__icon" aria-hidden="true"><use href="#i-hardhat"></use></svg>
+          <h3 class="why-item__title">Persönlich vom Chef</h3>
+          <p class="why-item__text">Ihr Ansprechpartner ist der, der auch den Bagger fährt.</p>
+        </li>
+        <li class="why-item" data-reveal>
+          <svg class="why-item__icon" aria-hidden="true"><use href="#i-check"></use></svg>
+          <h3 class="why-item__title">Sauber &amp; zuverlässig</h3>
+          <p class="why-item__text">Termine, die halten. Arbeit, die passt. Baustellen, die aufgeräumt bleiben.</p>
+        </li>
+        <li class="why-item" data-reveal>
+          <svg class="why-item__icon" aria-hidden="true"><use href="#i-pin"></use></svg>
+          <h3 class="why-item__title">Regional verwurzelt</h3>
+          <p class="why-item__text">Zuhause in der Region – im Umkreis von rund 60 km schnell bei Ihnen.</p>
+        </li>
+        <li class="why-item" data-reveal>
+          <svg class="why-item__icon" aria-hidden="true"><use href="#i-handshake"></use></svg>
+          <h3 class="why-item__title">Klare Absprachen</h3>
+          <p class="why-item__text">Ehrliche Einschätzung statt leerer Versprechen. Sie wissen immer, woran Sie sind.</p>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ============================== FOOTER ============================== -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer__brand">
+        <span class="brand__mark" aria-hidden="true">
+          <svg class="icon icon--mark"><use href="#i-track"></use></svg>
+        </span>
+        <div>
+          <p class="footer__name">L. Molitor Erd- &amp; Tiefbau</p>
+          <p class="footer__region"><span class="ph">[Region]</span></p>
+        </div>
+      </div>
+
+      <nav class="footer__nav" aria-label="Footer-Navigation">
+        <a href="leistungen.html">Leistungen</a>
+        <a href="ueber-uns.html" aria-current="page">Über uns</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="#" aria-disabled="true" class="footer__legal">Impressum <span class="ph">[folgt]</span></a>
+        <a href="#" aria-disabled="true" class="footer__legal">Datenschutz <span class="ph">[folgt]</span></a>
+      </nav>
+    </div>
+
+    <p class="footer__note">
+      Impressum &amp; Datenschutz sind noch nicht vollständig und werden vor dem Launch
+      rechtssicher ergänzt. © <span data-year>2026</span> L. Molitor Erd- &amp; Tiefbau.
+    </p>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -103,8 +103,13 @@ async function initAnimations() {
     gsap.registerPlugin(ScrollTrigger);
     document.documentElement.classList.add('js-anim');
 
-    // Sanftes Scrollen
-    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    // Sanftes Scrollen: lerp = gleichmäßiges, kontinuierliches Glätten.
+    // Kein zeitbasiertes Nachgleiten (duration) -> kein Abbremsen/Beschleunigen.
+    const lenis = new Lenis({
+      lerp: 0.1,          // 1:1-Gefühl, aber weich; höher = direkter, niedriger = weicher
+      smoothWheel: true,
+      wheelMultiplier: 1, // Scroll-Distanz 1:1 zum Mausrad
+    });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);

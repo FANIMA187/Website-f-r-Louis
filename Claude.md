@@ -20,6 +20,12 @@ Bodenständigkeit, regionale Nähe. Ein Mann, seine Maschine, saubere Arbeit.
 
 **Domain (Wunsch):** molitor-bau.de
 
+> **Kundenbriefing:** Der vollständige Kunden-Kontext (Original-Antworten aus dem
+> Fragebogen von Louis) liegt in **`KONTEXT.md`**. Dort stehen O-Ton-Angaben zu
+> Leistungen, Zielgruppe, Look, typischem Wunsch-Auftrag und offenen Punkten.
+> Diese CLAUDE.md ist die *aufbereitete Arbeits-Anweisung*, `KONTEXT.md` die
+> *Rohquelle*. Bei Widersprüchen gilt CLAUDE.md – oder kurz nachfragen.
+
 ---
 
 ## 2. Marken-Identität (WICHTIG – das macht Molitor aus)
@@ -63,16 +69,19 @@ robusten, maschinenhaften „Baustellen“-Look.
 > großflächig als Hintergrund, sonst wird es fürs Auge anstrengend.
 
 ### Typografie
-Kräftig, industriell, gut lesbar – passend zum handfesten Charakter:
+Kräftig, industriell, gut lesbar – passend zum handfesten Charakter.
+**Aktuell im Code gesetzt** (selbst gehostet als WOFF2, DSGVO-konform):
 
-- **Kräftige Display-Schrift** für Überschriften und die Wortmarke – breit,
-  robust, „maschinell“. Passende Google Font (lizenzfrei, kommerziell nutzbar),
-  z. B. `Anton`, `Oswald` oder `Archivo` (700–900). Final beim Bauen festlegen.
-- **Gut lesbare Body-Schrift** für Fließtext, z. B. `Barlow` oder `Inter`.
+- **Display-Schrift `Archivo`** (Variable, 600–900) für Überschriften und die
+  Wortmarke – breit, robust, „maschinell“. Die `wdth`-Achse wird für den
+  plakativen Look genutzt (breite Versalien).
+- **Body-Schrift `Barlow`** (400–700) für Fließtext.
+- **Mono-Schrift `JetBrains Mono`** für Kicker, Codes, Labels, Platzhalter-Marker.
 
 ```css
---font-display: 'Oswald', system-ui, sans-serif;   /* Überschriften/Wortmarke */
---font-body:    'Barlow', system-ui, sans-serif;    /* Fließtext */
+--font-display: 'Archivo', system-ui, sans-serif;         /* Überschriften/Wortmarke */
+--font-body:    'Barlow', system-ui, sans-serif;          /* Fließtext */
+--font-mono:    'JetBrains Mono', ui-monospace, monospace; /* Kicker/Labels/Codes */
 ```
 > Große Überschriften gern in **Versalien (GROSSBUCHSTABEN)** – unterstreicht
 > den industriellen, plakativen Look (wie Beschriftung auf Baumaschinen).
@@ -152,6 +161,13 @@ molitor-bau/
 ```
 - CSS in `css/`, JS in `js/`, Bilder in `assets/images/`, SVG-Icons in `assets/icons/`.
 - Keine Inline-Styles, kein Inline-JS (`onclick=...`). Events in `main.js`.
+
+**Aktueller Stand (Juli 2026):** Die **Startseite (`index.html`)** steht im
+Grundgerüst: Header/Nav, Hero, Leistungen, Über uns, Warum Molitor, Ablauf,
+Einzugsgebiet, Kontaktformular, Footer. `style.css` und `main.js` sind
+entsprechend aufgebaut (Icon-Sprite inline, Foto-Platzhalter, progressive
+Animationen). Wir bauen von hier aus **weiter** – bestehende Struktur,
+Klassen-Namen und Konventionen fortführen, nicht neu erfinden.
 
 ---
 
