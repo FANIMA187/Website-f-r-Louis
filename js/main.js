@@ -151,10 +151,81 @@ async function initAnimations() {
   }
 }
 
+/* ------------------------------ Desktop-Dropdowns ------------------- */
+/* Aufklapp-Logik für Leistungen + Über uns: Klick toggelt, nur eins offen,
+   Escape schließt (Fokus zurück), Klick außerhalb schließt. Kontakt läuft
+   ohne JS rein über CSS-Hover/Fokus. */
+function initNavDropdowns() {
+  const items = Array.from(document.querySelectorAll('[data-nav-dropdown]'));
+  if (!items.length) return;
+
+  const close = (item) => {
+    item.classList.remove('is-open');
+    item.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', 'false');
+  };
+  const closeAll = (except) => items.forEach((it) => it !== except && close(it));
+
+  items.forEach((item) => {
+    const trigger = item.querySelector('[data-nav-trigger]');
+    if (!trigger) return;
+
+    trigger.addEventListener('click', () => {
+      const open = item.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', String(open));
+      closeAll(item); // immer nur ein Panel offen
+    });
+
+    // Klick auf einen Link im Panel schließt das Dropdown
+    item.querySelector('[data-nav-panel]')?.addEventListener('click', (e) => {
+      if (e.target.closest('a')) close(item);
+    });
+  });
+
+  // Klick außerhalb schließt alle
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-nav-dropdown]')) closeAll(null);
+  });
+
+  // Escape schließt das offene Panel und fokussiert seinen Trigger
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const openItem = items.find((it) => it.classList.contains('is-open'));
+    if (!openItem) return;
+    const trigger = openItem.querySelector('[data-nav-trigger]');
+    close(openItem);
+    trigger?.focus();
+  });
+}
+
+/* ------------------------------ Mobile-Akkordeons ------------------- */
+function initMobileAccordions() {
+  document.querySelectorAll('[data-acc-trigger]').forEach((trigger) => {
+    const panel = document.getElementById(trigger.getAttribute('aria-controls'));
+    if (!panel) return;
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+    });
+  });
+}
+
+/* ------------------------------ Platzhalter-Links ------------------- */
+/* aria-disabled-Links (Socials, Impressum, Datenschutz) führen nirgends hin. */
+function initDisabledLinks() {
+  document.querySelectorAll('a[aria-disabled="true"]').forEach((link) => {
+    link.addEventListener('click', (e) => e.preventDefault());
+  });
+}
+
 /* ------------------------------ Init --------------------------------- */
+document.documentElement.classList.add('js-nav'); // CSS: JS-gesteuertes Öffnen statt Hover-Fallback
 initYear();
 initHeaderScroll();
 initMobileMenu();
+initMobileAccordions();
+initNavDropdowns();
+initDisabledLinks();
 initForm();
 
 if (!prefersReducedMotion) {

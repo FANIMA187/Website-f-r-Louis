@@ -363,7 +363,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   padding: var(--space-lg) clamp(1rem, 4vw, 2rem) var(--space-xl);
 }
 .mobile-menu[hidden] { display: none; }
-.mobile-menu__list { display: grid; gap: 0.35rem; margin-bottom: var(--space-lg); }
+.mobile-menu__list { display: grid; gap: 0; margin-bottom: var(--space-lg); }
 .mobile-menu__link {
   display: block;
   font-family: var(--font-display);
@@ -371,12 +371,279 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   text-transform: uppercase;
   font-size: 1.3rem;
   padding: 0.6rem 0;
-  border-bottom: 1px solid var(--border);
   color: var(--ink);
 }
 .mobile-menu__link:hover { color: var(--primary-hi); }
-.mobile-menu__link[aria-current="page"] { color: var(--primary); }
 .mobile-menu .btn { width: 100%; }
+
+/* =====================================================================
+   Mega-Menü (Desktop) + Akkordeons (Mobile)
+   Öffnen ohne JS über :hover/:focus-within; mit JS über .is-open.
+   ===================================================================== */
+
+/* ---- Desktop: Trigger (Button) wie ein Nav-Link ---- */
+.main-nav__item { display: flex; align-items: center; }
+.main-nav__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: none;
+  border: 0;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+.main-nav__trigger:hover,
+.main-nav__item--mega.is-open .main-nav__trigger,
+.main-nav__item--hover:hover .main-nav__trigger,
+.main-nav__item--hover:focus-within .main-nav__trigger { color: var(--ink); }
+.main-nav__trigger--static { cursor: default; }
+.main-nav__chevron {
+  width: 13px; height: 13px;
+  color: var(--primary);
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: transform var(--dur) var(--ease);
+}
+html:not(.js-nav) .main-nav__item--mega:hover .main-nav__chevron,
+html:not(.js-nav) .main-nav__item--mega:focus-within .main-nav__chevron,
+.main-nav__item--mega.is-open .main-nav__chevron,
+.main-nav__item--hover:hover .main-nav__chevron,
+.main-nav__item--hover:focus-within .main-nav__chevron { transform: rotate(180deg); }
+
+/* ---- Panels: Grundzustand geschlossen ---- */
+.mega, .mini {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.18s var(--ease),
+              transform 0.18s var(--ease),
+              visibility 0s linear 0.18s;
+  z-index: 20;
+}
+/* Öffnen: Kontakt (immer per Hover/Fokus), Mega ohne JS per Hover/Fokus, mit JS per .is-open */
+.main-nav__item--hover:hover > .mini,
+.main-nav__item--hover:focus-within > .mini,
+html:not(.js-nav) .main-nav__item--mega:hover > .mega,
+html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
+.main-nav__item--mega.is-open > .mega {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease), visibility 0s;
+}
+
+/* ---- Großes Mega-Panel (volle Breite, Inhalt auf --maxw) ---- */
+.mega {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 30px 48px -28px rgba(0, 0, 0, 0.75);
+}
+.mega__inner {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: var(--space-lg) clamp(1rem, 4vw, 2rem) var(--space-xl);
+  display: grid;
+  gap: var(--space-xl);
+}
+.mega__inner--services { grid-template-columns: 2.3fr 1fr; align-items: start; }
+.mega__inner--about { grid-template-columns: 1fr 1.35fr; align-items: start; }
+
+/* Große Leistungs-Karten mit dezentem Ocker-Raster */
+.mega-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+.mega-card {
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+  padding: var(--space-lg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-2);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px);
+  background-size: 20px 20px;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.mega-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.mega-card__icon {
+  width: 28px; height: 28px; color: var(--primary);
+  fill: none; stroke: currentColor; stroke-width: 1.75;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: color var(--dur) var(--ease);
+}
+.mega-card:hover .mega-card__icon { color: var(--primary-hi); }
+.mega-card__title {
+  font-family: var(--font-display); font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.01em;
+  font-size: 1rem; color: var(--ink);
+}
+.mega-card__text { font-size: var(--fs-small); color: var(--ink-2); line-height: 1.5; }
+
+/* Kleine Zusatzliste */
+.mega-aside { align-content: start; border-left: 1px solid var(--border); padding-left: var(--space-lg); }
+.mega-aside__label {
+  font-family: var(--font-mono); font-size: var(--fs-kicker);
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 0.5rem;
+}
+.mega-list { display: grid; gap: 0.1rem; margin-bottom: var(--space-md); }
+.mega-list__link {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.45rem 0.5rem; border-radius: var(--radius);
+  color: var(--ink-2); font-size: 0.95rem;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.mega-list__link:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--ink); }
+.mega-list__icon {
+  width: 18px; height: 18px; color: var(--primary); flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.75;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.mega-aside__all {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary);
+  transition: color var(--dur) var(--ease);
+}
+.mega-aside__all:hover { color: var(--primary-hi); }
+
+/* Über-uns: Foto-Feature + Kacheln */
+.mega-feature {
+  display: grid; gap: var(--space-md); align-content: start;
+  padding: var(--space-lg);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background-color: var(--surface-2);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px);
+  background-size: 20px 20px;
+  transition: border-color var(--dur) var(--ease);
+}
+.mega-feature:hover { border-color: var(--primary); }
+.mega-feature__photo {
+  display: grid; place-content: center; justify-items: center; gap: 0.4rem;
+  aspect-ratio: 16 / 9;
+  border: 2px dashed var(--primary-dim); border-radius: var(--radius);
+  background: repeating-linear-gradient(45deg, var(--surface-2) 0 12px, var(--surface) 12px 24px);
+}
+.mega-feature__icon {
+  width: 30px; height: 30px; color: var(--primary);
+  fill: none; stroke: currentColor; stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.mega-feature__tag {
+  font-family: var(--font-mono); font-size: 0.66rem;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--primary);
+}
+.mega-feature__body { display: grid; gap: 0.15rem; }
+.mega-feature__name {
+  font-family: var(--font-display); font-weight: 800;
+  text-transform: uppercase; color: var(--ink); font-size: 1.05rem;
+}
+.mega-feature__role { font-size: var(--fs-small); color: var(--ink-2); }
+
+.mega-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); align-content: start; }
+.mega-tile {
+  display: grid; grid-template-columns: auto 1fr; gap: 0.1rem 0.6rem;
+  align-content: start;
+  padding: var(--space-md);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface-2);
+  transition: border-color var(--dur) var(--ease);
+}
+a.mega-tile:hover { border-color: var(--primary); }
+.mega-tile__icon {
+  grid-row: 1 / span 2; align-self: start;
+  width: 22px; height: 22px; color: var(--primary); flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.75;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.mega-tile__title {
+  font-family: var(--font-display); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.02em;
+  font-size: 0.85rem; color: var(--ink);
+}
+.mega-tile__text { font-size: var(--fs-small); color: var(--ink-2); }
+.mega-tile--legal .mega-tile__text { display: flex; flex-wrap: wrap; gap: 0.15rem 0.6rem; }
+.mega-tile__legal { color: var(--muted); cursor: default; }
+
+/* ---- Kleines Kontakt-Dropdown ---- */
+.main-nav__item--hover { position: relative; }
+.mini {
+  position: absolute;
+  top: 100%; right: 0;
+  min-width: 250px;
+  margin-top: 0.4rem;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 40px -26px rgba(0, 0, 0, 0.8);
+}
+.mini__label {
+  font-family: var(--font-mono); font-size: var(--fs-kicker);
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 0.5rem; padding-inline: 0.5rem;
+}
+.contact-links { display: grid; gap: 0.1rem; }
+.contact-links__item {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.5rem; border-radius: var(--radius);
+  color: var(--ink); font-size: 0.92rem;
+  transition: background var(--dur) var(--ease);
+}
+.contact-links__item:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.contact-links__icon {
+  width: 18px; height: 18px; color: var(--primary); flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.75;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Deaktivierte Platzhalter-Links (Socials/Rechtliches) */
+.main-nav [aria-disabled="true"] { cursor: default; }
+
+/* ---- Mobile: Akkordeons im Burger-Menü ---- */
+.mobile-menu__group { border-bottom: 1px solid var(--border); }
+.mobile-menu__acc {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);
+  width: 100%;
+  background: none; border: 0; cursor: pointer;
+  font-family: var(--font-display); font-weight: 700;
+  text-transform: uppercase; font-size: 1.3rem;
+  padding: 0.6rem 0; color: var(--ink); text-align: left;
+}
+.mobile-menu__acc:hover { color: var(--primary-hi); }
+.mobile-menu__chevron {
+  width: 20px; height: 20px; color: var(--primary); flex: none;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: transform var(--dur) var(--ease);
+}
+.mobile-menu__acc[aria-expanded="true"] .mobile-menu__chevron { transform: rotate(180deg); }
+.mobile-menu__panel { display: grid; gap: 0.1rem; padding: 0.1rem 0 0.7rem; }
+.mobile-menu__panel[hidden] { display: none; }
+.mobile-menu__sub {
+  display: block;
+  font-family: var(--font-body); font-size: 1rem;
+  color: var(--ink-2);
+  padding: 0.45rem 0 0.45rem 0.9rem;
+  border-left: 2px solid var(--border-hi);
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.mobile-menu__sub:hover { color: var(--ink); border-left-color: var(--primary); }
+.mobile-menu__sub--all { color: var(--primary); }
+.mobile-menu [aria-disabled="true"] { cursor: default; color: var(--muted); }
 
 /* ------------------------------ Hero --------------------------------- */
 .hero { padding-top: calc(72px + var(--space-2xl)); }
