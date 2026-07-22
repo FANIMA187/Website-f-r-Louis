@@ -38,36 +38,56 @@ der Charakter von Baustelle, Maschine und Erde. Handfest und nahbar.
 Referenz, die dem Kunden gefällt: **dimaxbau.de** (als Richtungs-Orientierung,
 nicht zum Nachbauen).
 
-### Farbwelt (Bagger-Gelb/Ocker auf dunklem Anthrazit)
-Leitfarbe ist das **warme Gelb/Ocker von Volvo-Baggern** als Akzent, kombiniert
-mit tiefem Anthrazit/Fast-Schwarz und neutralen Grautönen. Das ergibt den
-robusten, maschinenhaften „Baustellen“-Look.
-
+### Farbwelt (Maschinen-Gelb auf Onyx/Anthrazit)
+ 
+Leitfarbe ist ein kräftiges **Maschinen-Gelb (Bright Amber)** als Akzent auf
+tiefem Onyx-Schwarz mit neutralen Grautönen. Das ergibt den robusten,
+maschinenhaften „Baustellen"-Look – hart, klar, ehrlich.
+ 
+**Basis-Palette (5 Farben):**
+- `#0D0D0D` Onyx – Haupt-Hintergrund
+- `#1A1A1A` Carbon Black – Karten, Flächen
+- `#3D3D3D` Gunmetal – Ränder, Trennlinien, gedämpfte Elemente
+- `#FFCC00` Bright Amber – Akzentfarbe
+- `#F2F2F2` White Smoke – Text
 ```css
 :root {
-  /* Ground — tiefes Anthrazit, roh und maschinell */
-  --bg:          #14140f;   /* fast schwarz, minimal warm */
-  --surface:     #1c1c17;   /* Karten/Flächen, leicht heller */
-  --surface-2:   #26261f;
-
-  /* Akzent — Bagger-Gelb/Ocker (Volvo), edel und sparsam einsetzen */
-  --primary:     #DA9343;   /* Bagger-Gelb/Ocker (vom Kunden gewählt) */
-  --primary-hi:  #e9a95f;   /* helleres Ocker für Hover */
-  --primary-dim: #9c6a2e;   /* gedämpft, für dezente Flächen/Ränder */
-
+  /* Ground — tiefes Onyx-Schwarz, roh und maschinell */
+  --bg:          #0D0D0D;   /* Onyx – Haupt-Hintergrund */
+  --surface:     #1A1A1A;   /* Carbon Black – Karten/Flächen */
+  --surface-2:   #262626;   /* abgeleitet: leicht heller für gestapelte Flächen */
+ 
+  /* Akzent — Maschinen-Gelb, kräftig und sparsam einsetzen */
+  --primary:     #FFCC00;   /* Bright Amber (Basis-Palette) */
+  --primary-hi:  #FFD633;   /* abgeleitet: heller für Hover */
+  --primary-dim: #B38F00;   /* abgeleitet: gedämpft für Ränder/dezente Flächen */
+ 
   /* Ink / Text */
-  --ink:         #f2efe8;   /* warmes Off-White */
-  --ink-2:       #b7b3a8;   /* gedämpft */
-  --muted:       #77736a;
-
-  --border:      #2c2c23;
+  --ink:         #F2F2F2;   /* White Smoke – Fließtext, Überschriften */
+  --ink-2:       #B3B3B3;   /* abgeleitet: gedämpfter Text */
+  --muted:       #949494;   /* abgeleitet: Hinweise/Platzhalter – AA auch auf Flächen (#808080 wäre nur ~3.8–4.4:1) */
+ 
+  /* Struktur */
+  --border:      #3D3D3D;   /* Gunmetal – Ränder, Trennlinien */
+  --border-hi:   #4D4D4D;   /* abgeleitet: hervorgehobene Ränder */
 }
 ```
-> Hinweis: Werte sind ein moderner Startpunkt, kein Dogma. Feinschliff erlaubt,
-> solange die Welt **Ocker/Gelb auf dunklem Anthrazit** klar erhalten bleibt.
-> Das Gelb immer als **Akzent** (Buttons, Highlights, Linien, Hover) – nie
-> großflächig als Hintergrund, sonst wird es fürs Auge anstrengend.
-
+ 
+> Die drei `--primary-*`-Werte, die `--ink-2`/`--muted`-Abstufungen und
+> `--surface-2`/`--border-hi` sind aus der Basis-Palette abgeleitet, weil man
+> für Hover-Zustände, gedämpften Text und gestapelte Flächen Zwischentöne
+> braucht. Sie bleiben im selben Farbraum.
+ 
+> **Wichtig:** Das Gelb immer als **Akzent** (Buttons, Highlights, Linien,
+> Hover, Icons) – nie großflächig als Hintergrund. `#FFCC00` ist deutlich
+> kräftiger als der vorherige Ocker-Ton und wird großflächig schnell
+> anstrengend fürs Auge. Sparsam = wertig.
+ 
+> **Kontrast-Hinweis:** Gelb `#FFCC00` auf Onyx `#0D0D0D` hat sehr hohen
+> Kontrast (gut lesbar). Bei Buttons mit gelbem Hintergrund muss die
+> Schriftfarbe **dunkel** sein (`#0D0D0D`), nicht weiß – sonst wird es
+> unlesbar.
+ 
 ### Typografie
 Kräftig, industriell, gut lesbar – passend zum handfesten Charakter.
 **Aktuell im Code gesetzt** (selbst gehostet als WOFF2, DSGVO-konform):

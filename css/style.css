@@ -40,23 +40,23 @@
 
 /* ------------------------------ Tokens ------------------------------- */
 :root {
-  /* Ground — tiefes Anthrazit, roh und maschinell */
-  --bg:          #14140f;
-  --surface:     #1c1c17;
-  --surface-2:   #26261f;
+  /* Ground — Onyx / Carbon Black, neutral und maschinell */
+  --bg:          #0D0D0D;   /* Onyx */
+  --surface:     #1A1A1A;   /* Carbon Black — Karten/Flächen */
+  --surface-2:   #262626;   /* leicht erhöhte Fläche (abgeleitet) */
 
-  /* Akzent — Bagger-Ocker (sparsam!) */
-  --primary:     #DA9343;
-  --primary-hi:  #e9a95f;
-  --primary-dim: #9c6a2e;
+  /* Akzent — Bright Amber (kräftig! nur als Akzent, nie großflächig) */
+  --primary:     #FFCC00;   /* Bright Amber */
+  --primary-hi:  #FFD633;   /* heller für Hover (abgeleitet) */
+  --primary-dim: #B38F00;   /* gedämpftes Gold für Linien/Ränder (abgeleitet) */
 
   /* Ink / Text */
-  --ink:         #f2efe8;
-  --ink-2:       #b7b3a8;
-  --muted:       #969184;   /* auf AA-Kleintext angehoben (>=4.5:1) */
+  --ink:         #F2F2F2;   /* White Smoke */
+  --ink-2:       #B3B3B3;   /* sekundärer Text (abgeleitet) */
+  --muted:       #949494;   /* kleiner/gedämpfter Text, AA-fest (abgeleitet) */
 
-  --border:      #2c2c23;
-  --border-hi:   #3a3a2e;
+  --border:      #3D3D3D;   /* Gunmetal */
+  --border-hi:   #4D4D4D;   /* betonter Rand/Hover (abgeleitet) */
 
   /* Schriften */
   --font-display: 'Archivo', system-ui, sans-serif;
@@ -141,7 +141,7 @@ img, svg { display: block; max-width: 100%; }
 
 ul, ol { margin: 0; padding: 0; list-style: none; }
 
-::selection { background: var(--primary); color: #14140f; }
+::selection { background: var(--primary); color: var(--bg); }
 
 :focus-visible {
   outline: 2px solid var(--primary-hi);
@@ -221,7 +221,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .btn--sm { --btn-pad-y: 0.6rem; --btn-pad-x: 1.1rem; font-size: 0.82rem; }
 
-.btn--primary { background: var(--primary); color: #14140f; }
+.btn--primary { background: var(--primary); color: var(--bg); }
 .btn--primary:hover { background: var(--primary-hi); transform: translateY(-2px); }
 
 .btn--ghost {
@@ -868,7 +868,7 @@ a.mega-tile:hover { border-color: var(--primary); }
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 1.35rem;
-  color: #14140f;
+  color: var(--bg);
   background: var(--primary);
   border-radius: var(--radius);
 }
