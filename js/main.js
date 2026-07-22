@@ -152,48 +152,53 @@ async function initAnimations() {
 }
 
 /* ------------------------------ Desktop-Dropdowns ------------------- */
-/* Aufklapp-Logik für Leistungen + Über uns: Klick toggelt, nur eins offen,
-   Escape schließt (Fokus zurück), Klick außerhalb schließt. Kontakt läuft
-   ohne JS rein über CSS-Hover/Fokus. */
+/* Hover/Fokus öffnet Leistungen/Über uns/Kontakt – mit kleiner Schließ-
+   verzögerung, damit man zu den Einträgen wandern kann (Change #4). Die
+   Hauptpunkte (Leistungen/Über uns) sind Links: ein Klick navigiert zur Seite.
+   Ohne JS öffnet das Panel per CSS-Hover/Fokus (Hover-Brücke). */
 function initNavDropdowns() {
   const items = Array.from(document.querySelectorAll('[data-nav-dropdown]'));
   if (!items.length) return;
+  const CLOSE_DELAY = 220;
+  const timers = new Map();
 
-  const close = (item) => {
-    item.classList.remove('is-open');
-    item.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', 'false');
+  const setOpen = (item, open) => {
+    item.classList.toggle('is-open', open);
+    item.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', String(open));
   };
-  const closeAll = (except) => items.forEach((it) => it !== except && close(it));
 
   items.forEach((item) => {
     const trigger = item.querySelector('[data-nav-trigger]');
-    if (!trigger) return;
+    let suppressFocusOpen = false;
 
-    trigger.addEventListener('click', () => {
-      const open = item.classList.toggle('is-open');
-      trigger.setAttribute('aria-expanded', String(open));
-      closeAll(item); // immer nur ein Panel offen
+    const open = () => {
+      clearTimeout(timers.get(item));
+      // immer nur eins offen – andere sofort schließen (kein Überlappen)
+      items.forEach((other) => {
+        if (other !== item) { clearTimeout(timers.get(other)); setOpen(other, false); }
+      });
+      setOpen(item, true);
+    };
+    const closeSoon = () => {
+      clearTimeout(timers.get(item));
+      timers.set(item, setTimeout(() => setOpen(item, false), CLOSE_DELAY));
+    };
+
+    item.addEventListener('mouseenter', open);
+    item.addEventListener('mouseleave', closeSoon);
+    item.addEventListener('focusin', () => { if (!suppressFocusOpen) open(); });
+    item.addEventListener('focusout', (e) => {
+      if (!item.contains(e.relatedTarget)) setOpen(item, false);
     });
 
-    // Klick auf einen Link im Panel schließt das Dropdown
-    item.querySelector('[data-nav-panel]')?.addEventListener('click', (e) => {
-      if (e.target.closest('a')) close(item);
+    // Escape schließt und gibt den Fokus zurück (ohne sofort wieder zu öffnen)
+    item.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !item.classList.contains('is-open')) return;
+      setOpen(item, false);
+      suppressFocusOpen = true;
+      trigger?.focus();
+      setTimeout(() => { suppressFocusOpen = false; }, 0);
     });
-  });
-
-  // Klick außerhalb schließt alle
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('[data-nav-dropdown]')) closeAll(null);
-  });
-
-  // Escape schließt das offene Panel und fokussiert seinen Trigger
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    const openItem = items.find((it) => it.classList.contains('is-open'));
-    if (!openItem) return;
-    const trigger = openItem.querySelector('[data-nav-trigger]');
-    close(openItem);
-    trigger?.focus();
   });
 }
 

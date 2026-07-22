@@ -396,13 +396,46 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   border: 0;
   padding: 0.4rem 0;
   cursor: pointer;
+  position: relative;
+  text-decoration: none;
   transition: color var(--dur) var(--ease);
 }
 .main-nav__trigger:hover,
+.main-nav__item--mega:hover .main-nav__trigger,
 .main-nav__item--mega.is-open .main-nav__trigger,
 .main-nav__item--hover:hover .main-nav__trigger,
-.main-nav__item--hover:focus-within .main-nav__trigger { color: var(--ink); }
+.main-nav__item--hover:focus-within .main-nav__trigger,
+.main-nav__trigger[aria-current="page"] { color: var(--ink); }
 .main-nav__trigger--static { cursor: default; }
+
+/* Ocker-Unterstrich wie bei .main-nav__link */
+.main-nav__trigger::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 2px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+.main-nav__trigger:hover::after,
+.main-nav__item--mega:hover .main-nav__trigger::after,
+.main-nav__item--mega.is-open .main-nav__trigger::after,
+.main-nav__item--hover:hover .main-nav__trigger::after,
+.main-nav__item--hover.is-open .main-nav__trigger::after,
+.main-nav__trigger[aria-current="page"]::after { transform: scaleX(1); }
+
+/* Hover-Brücke: transparenter Streifen unter dem Trigger schließt den Spalt zum Panel,
+   damit das Menü beim Wandern zu den Einträgen offen bleibt (Change #4). */
+.main-nav__item--mega .main-nav__trigger::before,
+.main-nav__item--hover .main-nav__trigger::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 100%;
+  height: 1.3rem;
+}
+
 .main-nav__chevron {
   width: 13px; height: 13px;
   color: var(--primary);
@@ -410,11 +443,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur) var(--ease);
 }
-html:not(.js-nav) .main-nav__item--mega:hover .main-nav__chevron,
+.main-nav__item--mega:hover .main-nav__chevron,
 html:not(.js-nav) .main-nav__item--mega:focus-within .main-nav__chevron,
 .main-nav__item--mega.is-open .main-nav__chevron,
 .main-nav__item--hover:hover .main-nav__chevron,
-.main-nav__item--hover:focus-within .main-nav__chevron { transform: rotate(180deg); }
+.main-nav__item--hover:focus-within .main-nav__chevron,
+.main-nav__item--hover.is-open .main-nav__chevron { transform: rotate(180deg); }
 
 /* ---- Panels: Grundzustand geschlossen ---- */
 .mega, .mini {
@@ -427,11 +461,12 @@ html:not(.js-nav) .main-nav__item--mega:focus-within .main-nav__chevron,
               visibility 0s linear 0.18s;
   z-index: 20;
 }
-/* Öffnen: Kontakt (immer per Hover/Fokus), Mega ohne JS per Hover/Fokus, mit JS per .is-open */
+/* Öffnen: per Hover immer; per Fokus nur ohne JS; mit JS über .is-open (Hover-Intent) */
 .main-nav__item--hover:hover > .mini,
-.main-nav__item--hover:focus-within > .mini,
-html:not(.js-nav) .main-nav__item--mega:hover > .mega,
+.main-nav__item--mega:hover > .mega,
+html:not(.js-nav) .main-nav__item--hover:focus-within > .mini,
 html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
+.main-nav__item--hover.is-open > .mini,
 .main-nav__item--mega.is-open > .mega {
   opacity: 1;
   visibility: visible;
@@ -553,7 +588,8 @@ html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
 }
 .mega-feature__role { font-size: var(--fs-small); color: var(--ink-2); }
 
-.mega-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); align-content: start; }
+/* grid-auto-rows: 1fr -> alle Kacheln gleich hoch, „Socials" & „Rechtliches" schließen bündig ab (Change #3) */
+.mega-tiles { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: var(--space-sm); align-content: start; }
 .mega-tile {
   display: grid; grid-template-columns: auto 1fr; gap: 0.1rem 0.6rem;
   align-content: start;
@@ -644,6 +680,9 @@ a.mega-tile:hover { border-color: var(--primary); }
 .mobile-menu__sub:hover { color: var(--ink); border-left-color: var(--primary); }
 .mobile-menu__sub--all { color: var(--primary); }
 .mobile-menu [aria-disabled="true"] { cursor: default; color: var(--muted); }
+
+/* Cross-page Hash-Sprünge (z.B. leistungen.html#leistung-tiefbau) nicht unter dem fixen Header landen lassen */
+.service-card, #warum { scroll-margin-top: calc(72px + 1.25rem); }
 
 /* ------------------------------ Hero --------------------------------- */
 .hero { padding-top: calc(72px + var(--space-2xl)); }
@@ -868,6 +907,12 @@ a.mega-tile:hover { border-color: var(--primary); }
 
 /* ------------------------------ Kontakt ------------------------------ */
 .contact__grid { display: grid; gap: var(--space-2xl); align-items: start; }
+
+/* Anfrage-CTA-Sektion auf der Startseite (Formular liegt auf anfrage.html) */
+.contact__cta { max-width: 62ch; }
+.contact__cta-text { font-size: var(--fs-lead); color: var(--ink-2); margin-top: var(--space-md); }
+.contact__cta-actions { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-xl); }
+
 .contact__direct { display: grid; gap: var(--space-sm); margin-top: var(--space-xl); }
 .contact__item {
   display: flex; align-items: center; gap: 0.7rem;

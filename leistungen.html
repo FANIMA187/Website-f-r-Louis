@@ -93,6 +93,8 @@
       <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></symbol>
       <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
       <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+      <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1"/></symbol>
     </defs>
   </svg>
 
@@ -112,12 +114,133 @@
 
       <nav class="main-nav" aria-label="Hauptnavigation">
         <ul class="main-nav__list">
-          <li><a class="main-nav__link" href="leistungen.html" aria-current="page">Leistungen</a></li>
-          <li><a class="main-nav__link" href="ueber-uns.html">Über uns</a></li>
-          <li><a class="main-nav__link" href="ablauf.html">Ablauf</a></li>
-          <li><a class="main-nav__link" href="kontakt.html">Kontakt</a></li>
+
+          <!-- Leistungen: Link (Klick -> Seite) mit Hover-Mega-Dropdown -->
+          <li class="main-nav__item main-nav__item--mega" data-nav-dropdown>
+            <a class="main-nav__trigger" href="leistungen.html" aria-current="page" aria-haspopup="true" aria-expanded="false" data-nav-trigger>
+              Leistungen
+              <svg class="main-nav__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </a>
+            <div class="mega" id="mega-leistungen" data-nav-panel>
+              <div class="mega__inner mega__inner--services">
+                <ul class="mega-cards">
+                  <li>
+                    <a class="mega-card" href="leistungen.html#leistung-tiefbau">
+                      <svg class="mega-card__icon" aria-hidden="true"><use href="#i-layers"></use></svg>
+                      <span class="mega-card__title">Tiefbau</span>
+                      <span class="mega-card__text">Solide Basis für alles, was darauf entsteht.</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="mega-card" href="leistungen.html#leistung-abbruch">
+                      <svg class="mega-card__icon" aria-hidden="true"><use href="#i-hammer"></use></svg>
+                      <span class="mega-card__title">Abbruch &amp; Wegebau</span>
+                      <span class="mega-card__text">Platz und Zugang schaffen, wo gebaut wird.</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="mega-card" href="leistungen.html#leistung-pflaster">
+                      <svg class="mega-card__icon" aria-hidden="true"><use href="#i-paving"></use></svg>
+                      <span class="mega-card__title">Pflasterarbeiten</span>
+                      <span class="mega-card__text">Wege, Einfahrten und Flächen, sauber verlegt.</span>
+                    </a>
+                  </li>
+                </ul>
+                <div class="mega-aside">
+                  <p class="mega-aside__label">Außerdem</p>
+                  <ul class="mega-list">
+                    <li><a class="mega-list__link" href="leistungen.html#leistung-baggerarbeiten"><svg class="mega-list__icon" aria-hidden="true"><use href="#i-excavator"></use></svg>Baggerarbeiten</a></li>
+                    <li><a class="mega-list__link" href="leistungen.html#leistung-bodenplatten"><svg class="mega-list__icon" aria-hidden="true"><use href="#i-slab"></use></svg>Bodenplatten</a></li>
+                    <li><a class="mega-list__link" href="leistungen.html#leistung-erdarbeiten"><svg class="mega-list__icon" aria-hidden="true"><use href="#i-shovel"></use></svg>Erdarbeiten &amp; Aushub</a></li>
+                  </ul>
+                  <a class="mega-aside__all" href="leistungen.html">Alle Leistungen ansehen
+                    <svg class="icon icon--inline" aria-hidden="true"><use href="#i-arrow"></use></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- Über uns: Link mit Hover-Mega-Dropdown -->
+          <li class="main-nav__item main-nav__item--mega" data-nav-dropdown>
+            <a class="main-nav__trigger" href="ueber-uns.html" aria-haspopup="true" aria-expanded="false" data-nav-trigger>
+              Über uns
+              <svg class="main-nav__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </a>
+            <div class="mega" id="mega-ueber" data-nav-panel>
+              <div class="mega__inner mega__inner--about">
+                <a class="mega-feature" href="ueber-uns.html">
+                  <span class="mega-feature__photo" aria-hidden="true">
+                    <svg class="mega-feature__icon"><use href="#i-camera"></use></svg>
+                    <span class="mega-feature__tag">Foto folgt</span>
+                  </span>
+                  <span class="mega-feature__body">
+                    <span class="mega-feature__name">Louis Molitor</span>
+                    <span class="mega-feature__role">Ihr Ansprechpartner – ein Betrieb, ein Kontakt</span>
+                  </span>
+                </a>
+                <ul class="mega-tiles">
+                  <li>
+                    <a class="mega-tile" href="ueber-uns.html#warum">
+                      <svg class="mega-tile__icon" aria-hidden="true"><use href="#i-check"></use></svg>
+                      <span class="mega-tile__title">Warum Molitor</span>
+                      <span class="mega-tile__text">Worauf Sie sich verlassen können</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="mega-tile" href="mailto:[Adresse]">
+                      <svg class="mega-tile__icon" aria-hidden="true"><use href="#i-mail"></use></svg>
+                      <span class="mega-tile__title">Kontakt per E-Mail</span>
+                      <span class="mega-tile__text"><span class="ph">[Adresse]</span></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="mega-tile" href="#" aria-disabled="true">
+                      <svg class="mega-tile__icon" aria-hidden="true"><use href="#i-instagram"></use></svg>
+                      <span class="mega-tile__title">Socials</span>
+                      <span class="mega-tile__text">Instagram <span class="ph">[Link]</span></span>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="mega-tile mega-tile--legal">
+                      <svg class="mega-tile__icon" aria-hidden="true"><use href="#i-clipboard"></use></svg>
+                      <span class="mega-tile__title">Rechtliches</span>
+                      <span class="mega-tile__text">
+                        <a class="mega-tile__legal" href="#" aria-disabled="true">Impressum <span class="ph">[folgt]</span></a>
+                        <a class="mega-tile__legal" href="#" aria-disabled="true">Datenschutz <span class="ph">[folgt]</span></a>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <!-- Ablauf: einfacher Link -->
+          <li class="main-nav__item">
+            <a class="main-nav__link" href="ablauf.html">Ablauf</a>
+          </li>
+
+          <!-- Kontakt: reines Hover/Fokus-Dropdown (kein Link, keine Seite) -->
+          <li class="main-nav__item main-nav__item--hover" data-nav-dropdown>
+            <button class="main-nav__trigger main-nav__trigger--static" type="button" aria-haspopup="true" aria-expanded="false" data-nav-trigger>
+              Kontakt
+              <svg class="main-nav__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </button>
+            <div class="mini" data-nav-panel>
+              <p class="mini__label">Direkter Draht</p>
+              <ul class="contact-links">
+                <li><a class="contact-links__item" href="tel:[Nummer]"><svg class="contact-links__icon" aria-hidden="true"><use href="#i-phone"></use></svg><span class="contact-links__text">Telefon <span class="ph">[Nummer]</span></span></a></li>
+                <li><a class="contact-links__item" href="https://wa.me/[Nummer]"><svg class="contact-links__icon" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span class="contact-links__text">WhatsApp <span class="ph">[Nummer]</span></span></a></li>
+                <li><a class="contact-links__item" href="mailto:[Adresse]"><svg class="contact-links__icon" aria-hidden="true"><use href="#i-mail"></use></svg><span class="contact-links__text">E-Mail <span class="ph">[Adresse]</span></span></a></li>
+                <li><a class="contact-links__item" href="#" aria-disabled="true"><svg class="contact-links__icon" aria-hidden="true"><use href="#i-instagram"></use></svg><span class="contact-links__text">Instagram <span class="ph">[Link]</span></span></a></li>
+              </ul>
+            </div>
+          </li>
+
         </ul>
-        <a class="btn btn--primary btn--sm" href="kontakt.html">Anfragen</a>
+
+        <a class="btn btn--primary btn--sm" href="anfrage.html">Grund schaffen</a>
       </nav>
 
       <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
@@ -125,16 +248,60 @@
       </button>
     </div>
 
-    <!-- Mobiles Overlay-Menü -->
+    <!-- Mobiles Overlay-Menü: Dropdowns werden zu Akkordeons -->
     <nav class="mobile-menu" id="mobile-menu" aria-label="Menü" data-mobile-menu hidden>
       <ul class="mobile-menu__list">
-        <li><a class="mobile-menu__link" href="leistungen.html" aria-current="page">Leistungen</a></li>
-        <li><a class="mobile-menu__link" href="ueber-uns.html">Über uns</a></li>
-        <li><a class="mobile-menu__link" href="ablauf.html">Ablauf</a></li>
-        <li><a class="mobile-menu__link" href="index.html#einzugsgebiet">Einzugsgebiet</a></li>
-        <li><a class="mobile-menu__link" href="kontakt.html">Kontakt</a></li>
+
+        <li class="mobile-menu__group">
+          <button class="mobile-menu__acc" type="button" aria-expanded="false" aria-controls="acc-leistungen" data-acc-trigger>
+            Leistungen
+            <svg class="mobile-menu__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+          </button>
+          <div class="mobile-menu__panel" id="acc-leistungen" data-acc-panel hidden>
+            <a class="mobile-menu__sub" href="leistungen.html#leistung-tiefbau">Tiefbau</a>
+            <a class="mobile-menu__sub" href="leistungen.html#leistung-abbruch">Abbruch &amp; Wegebau</a>
+            <a class="mobile-menu__sub" href="leistungen.html#leistung-pflaster">Pflasterarbeiten</a>
+            <a class="mobile-menu__sub" href="leistungen.html#leistung-baggerarbeiten">Baggerarbeiten</a>
+            <a class="mobile-menu__sub" href="leistungen.html#leistung-bodenplatten">Bodenplatten</a>
+            <a class="mobile-menu__sub" href="leistungen.html#leistung-erdarbeiten">Erdarbeiten &amp; Aushub</a>
+            <a class="mobile-menu__sub mobile-menu__sub--all" href="leistungen.html">Alle Leistungen ansehen</a>
+          </div>
+        </li>
+
+        <li class="mobile-menu__group">
+          <button class="mobile-menu__acc" type="button" aria-expanded="false" aria-controls="acc-ueber" data-acc-trigger>
+            Über uns
+            <svg class="mobile-menu__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+          </button>
+          <div class="mobile-menu__panel" id="acc-ueber" data-acc-panel hidden>
+            <a class="mobile-menu__sub" href="ueber-uns.html">Über uns – Übersicht</a>
+            <a class="mobile-menu__sub" href="ueber-uns.html#warum">Warum Molitor</a>
+            <a class="mobile-menu__sub" href="mailto:[Adresse]">Kontakt per E-Mail <span class="ph">[Adresse]</span></a>
+            <a class="mobile-menu__sub" href="#" aria-disabled="true">Instagram <span class="ph">[Link]</span></a>
+            <a class="mobile-menu__sub" href="#" aria-disabled="true">Impressum <span class="ph">[folgt]</span></a>
+            <a class="mobile-menu__sub" href="#" aria-disabled="true">Datenschutz <span class="ph">[folgt]</span></a>
+          </div>
+        </li>
+
+        <li class="mobile-menu__group">
+          <a class="mobile-menu__link" href="ablauf.html">Ablauf</a>
+        </li>
+
+        <li class="mobile-menu__group">
+          <button class="mobile-menu__acc" type="button" aria-expanded="false" aria-controls="acc-kontakt" data-acc-trigger>
+            Kontakt
+            <svg class="mobile-menu__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+          </button>
+          <div class="mobile-menu__panel" id="acc-kontakt" data-acc-panel hidden>
+            <a class="mobile-menu__sub" href="tel:[Nummer]">Telefon <span class="ph">[Nummer]</span></a>
+            <a class="mobile-menu__sub" href="https://wa.me/[Nummer]">WhatsApp <span class="ph">[Nummer]</span></a>
+            <a class="mobile-menu__sub" href="mailto:[Adresse]">E-Mail <span class="ph">[Adresse]</span></a>
+            <a class="mobile-menu__sub" href="#" aria-disabled="true">Instagram <span class="ph">[Link]</span></a>
+          </div>
+        </li>
+
       </ul>
-      <a class="btn btn--primary" href="kontakt.html">Projekt anfragen</a>
+      <a class="btn btn--primary" href="anfrage.html">Grund schaffen</a>
     </nav>
   </header>
 
@@ -156,37 +323,37 @@
     <!-- Gerüst: die bestehenden Karten. Später Platz für Detailtexte je Leistung. -->
     <section class="section services" aria-label="Leistungsübersicht">
       <ul class="service-grid">
-        <li class="service-card" data-reveal>
+        <li class="service-card" id="leistung-erdarbeiten" data-reveal>
           <span class="service-card__code">001</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-shovel"></use></svg>
           <h2 class="service-card__title">Erdarbeiten &amp; Aushub</h2>
           <p class="service-card__text">Ausschachten von Flächen für Fundamente, Pool und Hausbau – präzise vorbereitet, damit Ihr Projekt auf festem Grund steht.</p>
         </li>
-        <li class="service-card" data-reveal>
+        <li class="service-card" id="leistung-tiefbau" data-reveal>
           <span class="service-card__code">002</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-layers"></use></svg>
           <h2 class="service-card__title">Tiefbau</h2>
           <p class="service-card__text">Fachgerechte Tiefbauarbeiten als solide Basis für alles, was darauf entsteht.</p>
         </li>
-        <li class="service-card" data-reveal>
+        <li class="service-card" id="leistung-baggerarbeiten" data-reveal>
           <span class="service-card__code">003</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-excavator"></use></svg>
           <h2 class="service-card__title">Baggerarbeiten</h2>
           <p class="service-card__text">Effiziente Baggerarbeiten für Grundstück, Gelände und Baustelle – mit dem richtigen Gerät für den Job.</p>
         </li>
-        <li class="service-card" data-reveal>
+        <li class="service-card" id="leistung-pflaster" data-reveal>
           <span class="service-card__code">004</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-paving"></use></svg>
           <h2 class="service-card__title">Pflasterarbeiten</h2>
           <p class="service-card__text">Wege, Einfahrten und Flächen, sauber verlegt und gemacht, um zu halten.</p>
         </li>
-        <li class="service-card" data-reveal>
+        <li class="service-card" id="leistung-bodenplatten" data-reveal>
           <span class="service-card__code">005</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-slab"></use></svg>
           <h2 class="service-card__title">Bodenplatten</h2>
           <p class="service-card__text">Vorbereitung und Erstellung von Bodenplatten – die tragfähige Grundlage für Ihren Bau.</p>
         </li>
-        <li class="service-card" data-reveal>
+        <li class="service-card" id="leistung-abbruch" data-reveal>
           <span class="service-card__code">006</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-hammer"></use></svg>
           <h2 class="service-card__title">Abbruch &amp; Wegebau</h2>
@@ -213,7 +380,7 @@
       <nav class="footer__nav" aria-label="Footer-Navigation">
         <a href="leistungen.html" aria-current="page">Leistungen</a>
         <a href="ueber-uns.html">Über uns</a>
-        <a href="kontakt.html">Kontakt</a>
+        <a href="anfrage.html">Anfrage</a>
         <a href="#" aria-disabled="true" class="footer__legal">Impressum <span class="ph">[folgt]</span></a>
         <a href="#" aria-disabled="true" class="footer__legal">Datenschutz <span class="ph">[folgt]</span></a>
       </nav>
