@@ -170,7 +170,7 @@
             <div class="mega" id="mega-ueber" data-nav-panel>
               <div class="mega__inner mega__inner--about">
                 <a class="mega-feature" href="ueber-uns.html">
-                  <span class="mega-feature__photo" aria-hidden="true">
+                  <span class="mega-feature__bg" aria-hidden="true">
                     <svg class="mega-feature__icon"><use href="#i-camera"></use></svg>
                     <span class="mega-feature__tag">Foto folgt</span>
                   </span>
@@ -322,39 +322,76 @@
     <!-- ============================ LEISTUNGEN ============================ -->
     <!-- Gerüst: die bestehenden Karten. Später Platz für Detailtexte je Leistung. -->
     <section class="section services" aria-label="Leistungsübersicht">
-      <ul class="service-grid">
-        <li class="service-card" id="leistung-erdarbeiten" data-reveal>
+      <p class="service-grid__label" id="leistungen-primary-label" data-reveal>Hauptleistungen</p>
+      <ul class="feature-rows" aria-labelledby="leistungen-primary-label">
+        <li class="feature-row" id="leistung-tiefbau" data-reveal>
+          <div class="feature-row__media">
+            <figure class="photo-frame photo-frame--hero">
+              <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
+              <figcaption class="photo-frame__label">
+                <span class="photo-frame__tag">Foto folgt</span>
+                <span class="photo-frame__hint">Tiefbau – Baustelle im Aufbau</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="feature-row__body">
+            <svg class="feature-row__icon" aria-hidden="true"><use href="#i-layers"></use></svg>
+            <h2 class="feature-row__title">Tiefbau</h2>
+            <p class="feature-row__text">Fachgerechte Tiefbauarbeiten als solide Basis für alles, was darauf entsteht.</p>
+          </div>
+        </li>
+
+        <li class="feature-row feature-row--reverse" id="leistung-erdarbeiten" data-reveal>
+          <div class="feature-row__media">
+            <figure class="photo-frame photo-frame--hero">
+              <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
+              <figcaption class="photo-frame__label">
+                <span class="photo-frame__tag">Foto folgt</span>
+                <span class="photo-frame__hint">Erdarbeiten – Aushub für Fundament</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="feature-row__body">
+            <svg class="feature-row__icon" aria-hidden="true"><use href="#i-shovel"></use></svg>
+            <h2 class="feature-row__title">Erdarbeiten &amp; Aushub</h2>
+            <p class="feature-row__text">Ausschachten von Flächen für Fundamente, Pool und Hausbau – präzise vorbereitet, damit Ihr Projekt auf festem Grund steht.</p>
+          </div>
+        </li>
+
+        <li class="feature-row" id="leistung-pflaster" data-reveal>
+          <div class="feature-row__media">
+            <figure class="photo-frame photo-frame--hero">
+              <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
+              <figcaption class="photo-frame__label">
+                <span class="photo-frame__tag">Foto folgt</span>
+                <span class="photo-frame__hint">Pflasterarbeiten – frisch verlegte Fläche</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="feature-row__body">
+            <svg class="feature-row__icon" aria-hidden="true"><use href="#i-paving"></use></svg>
+            <h2 class="feature-row__title">Pflasterarbeiten</h2>
+            <p class="feature-row__text">Pflasterarbeiten zählen für uns zu den Kernleistungen: Ihre Wege, Einfahrten und Flächen mit sorgfältig vorbereitetem Unterbau, sauber verlegt und fachgerecht verdichtet – damit sie fest sitzen und lange halten.</p>
+          </div>
+        </li>
+      </ul>
+
+      <p class="service-grid__label service-grid__label--secondary" id="leistungen-secondary-label" data-reveal>Weitere Leistungen</p>
+      <ul class="service-grid service-grid--secondary" aria-labelledby="leistungen-secondary-label">
+        <li class="service-card service-card--secondary" id="leistung-baggerarbeiten" data-reveal>
           <span class="service-card__code">001</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-shovel"></use></svg>
-          <h2 class="service-card__title">Erdarbeiten &amp; Aushub</h2>
-          <p class="service-card__text">Ausschachten von Flächen für Fundamente, Pool und Hausbau – präzise vorbereitet, damit Ihr Projekt auf festem Grund steht.</p>
-        </li>
-        <li class="service-card" id="leistung-tiefbau" data-reveal>
-          <span class="service-card__code">002</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-layers"></use></svg>
-          <h2 class="service-card__title">Tiefbau</h2>
-          <p class="service-card__text">Fachgerechte Tiefbauarbeiten als solide Basis für alles, was darauf entsteht.</p>
-        </li>
-        <li class="service-card" id="leistung-baggerarbeiten" data-reveal>
-          <span class="service-card__code">003</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-excavator"></use></svg>
           <h2 class="service-card__title">Baggerarbeiten</h2>
           <p class="service-card__text">Effiziente Baggerarbeiten für Grundstück, Gelände und Baustelle – mit dem richtigen Gerät für den Job.</p>
         </li>
-        <li class="service-card" id="leistung-pflaster" data-reveal>
-          <span class="service-card__code">004</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-paving"></use></svg>
-          <h2 class="service-card__title">Pflasterarbeiten</h2>
-          <p class="service-card__text">Wege, Einfahrten und Flächen, sauber verlegt und gemacht, um zu halten.</p>
-        </li>
-        <li class="service-card" id="leistung-bodenplatten" data-reveal>
-          <span class="service-card__code">005</span>
+        <li class="service-card service-card--secondary" id="leistung-bodenplatten" data-reveal>
+          <span class="service-card__code">002</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-slab"></use></svg>
           <h2 class="service-card__title">Bodenplatten</h2>
           <p class="service-card__text">Vorbereitung und Erstellung von Bodenplatten – die tragfähige Grundlage für Ihren Bau.</p>
         </li>
-        <li class="service-card" id="leistung-abbruch" data-reveal>
-          <span class="service-card__code">006</span>
+        <li class="service-card service-card--secondary" id="leistung-abbruch" data-reveal>
+          <span class="service-card__code">003</span>
           <svg class="service-card__icon" aria-hidden="true"><use href="#i-hammer"></use></svg>
           <h2 class="service-card__title">Abbruch &amp; Wegebau</h2>
           <p class="service-card__text">Abbrucharbeiten und Wegebau, damit Platz und Zugang entstehen, wo gebaut wird.</p>

@@ -235,18 +235,27 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   transform: translateY(-2px);
 }
 
-/* Signatur: Ketten-Tread als Trennband */
+/* Signatur: Ketten-Tread als Trennband – zwei parallele Kettenspuren wie ein Bagger-Abdruck */
 .tread {
+  position: relative;
   height: 14px;
-  margin-top: var(--space-2xl);
-  background:
-    repeating-linear-gradient(90deg,
-      var(--primary-dim) 0 16px,
-      transparent 16px 26px);
-  opacity: 0.35;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
           mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 }
+.tread::before,
+.tread::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--primary-dim) 0 16px, transparent 16px 26px);
+  opacity: 0.4;
+}
+.tread::before { top: 0; }
+.tread::after { bottom: 0; }
+
+/* Hero-Kontext: übernimmt den fehlenden Section-Bottom-Abstand (Hero ist keine .section) */
+.hero__tread { margin-top: var(--space-2xl); }
 
 /* ------------------------------ Header ------------------------------- */
 .site-header {
@@ -329,17 +338,22 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   content: "";
   position: absolute;
   left: 0; bottom: -2px;
-  width: 100%; height: 2px;
-  background: var(--primary);
+  width: 100%; height: 1px;
+  background: var(--border-hi);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--dur) var(--ease);
 }
 .main-nav__link:hover { color: var(--ink); }
 .main-nav__link:hover::after { transform: scaleX(1); }
-/* Aktive Seite: Unterstrich dauerhaft sichtbar, Text hervorgehoben */
-.main-nav__link[aria-current="page"] { color: var(--ink); }
-.main-nav__link[aria-current="page"]::after { transform: scaleX(1); }
+/* Aktive Seite: kräftigerer Strich in Amber + fetter Text, überschreibt die neutrale
+   Basis dauerhaft. Kein Farb-/Höhensprung mehr beim Verlassen des Hovers. */
+.main-nav__link[aria-current="page"] { color: var(--primary); font-weight: 700; }
+.main-nav__link[aria-current="page"]::after {
+  height: 2px;
+  background: var(--primary);
+  transform: scaleX(1);
+}
 
 /* Burger */
 .nav-toggle {
@@ -374,6 +388,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   color: var(--ink);
 }
 .mobile-menu__link:hover { color: var(--primary-hi); }
+.mobile-menu__link[aria-current="page"] { color: var(--primary); }
 .mobile-menu .btn { width: 100%; }
 
 /* =====================================================================
@@ -404,17 +419,27 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .main-nav__item--mega:hover .main-nav__trigger,
 .main-nav__item--mega.is-open .main-nav__trigger,
 .main-nav__item--hover:hover .main-nav__trigger,
-.main-nav__item--hover:focus-within .main-nav__trigger,
-.main-nav__trigger[aria-current="page"] { color: var(--ink); }
+.main-nav__item--hover:focus-within .main-nav__trigger { color: var(--ink); }
+/* Aktive Seite: kräftigerer Strich in Amber + fetter Text. [aria-current] wird in
+   jede Hover-Kette gespiegelt, da die gekoppelten Hover-Selektoren sonst höhere
+   Spezifität haben und beim Hovern über die bereits aktive Seite gewinnen würden. */
+.main-nav__trigger[aria-current="page"],
+.main-nav__item--mega:hover .main-nav__trigger[aria-current="page"],
+.main-nav__item--mega.is-open .main-nav__trigger[aria-current="page"],
+.main-nav__item--hover:hover .main-nav__trigger[aria-current="page"],
+.main-nav__item--hover.is-open .main-nav__trigger[aria-current="page"] {
+  color: var(--primary);
+  font-weight: 700;
+}
 .main-nav__trigger--static { cursor: default; }
 
-/* Ocker-Unterstrich wie bei .main-nav__link */
+/* Neutraler Hover-Unterstrich wie bei .main-nav__link */
 .main-nav__trigger::after {
   content: "";
   position: absolute;
   left: 0; bottom: -2px;
-  width: 100%; height: 2px;
-  background: var(--primary);
+  width: 100%; height: 1px;
+  background: var(--border-hi);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--dur) var(--ease);
@@ -423,8 +448,19 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .main-nav__item--mega:hover .main-nav__trigger::after,
 .main-nav__item--mega.is-open .main-nav__trigger::after,
 .main-nav__item--hover:hover .main-nav__trigger::after,
-.main-nav__item--hover.is-open .main-nav__trigger::after,
-.main-nav__trigger[aria-current="page"]::after { transform: scaleX(1); }
+.main-nav__item--hover.is-open .main-nav__trigger::after { transform: scaleX(1); }
+
+/* Gleicher Grund wie bei der Textfarbe: [aria-current] muss die Hover-Ketten
+   spiegeln, um mindestens gleiche Spezifität zu erreichen. */
+.main-nav__trigger[aria-current="page"]::after,
+.main-nav__item--mega:hover .main-nav__trigger[aria-current="page"]::after,
+.main-nav__item--mega.is-open .main-nav__trigger[aria-current="page"]::after,
+.main-nav__item--hover:hover .main-nav__trigger[aria-current="page"]::after,
+.main-nav__item--hover.is-open .main-nav__trigger[aria-current="page"]::after {
+  height: 2px;
+  background: var(--primary);
+  transform: scaleX(1);
+}
 
 /* Hover-Brücke: transparenter Streifen unter dem Trigger schließt den Spalt zum Panel,
    damit das Menü beim Wandern zu den Einträgen offen bleibt (Change #4). */
@@ -492,7 +528,7 @@ html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
   gap: var(--space-xl);
 }
 .mega__inner--services { grid-template-columns: 2.3fr 1fr; align-items: start; }
-.mega__inner--about { grid-template-columns: 1fr 1.35fr; align-items: start; }
+.mega__inner--about { grid-template-columns: 0.85fr 1.5fr; align-items: stretch; }
 
 /* Große Leistungs-Karten mit dezentem Ocker-Raster */
 .mega-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
@@ -553,35 +589,53 @@ html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
 }
 .mega-aside__all:hover { color: var(--primary-hi); }
 
-/* Über-uns: Foto-Feature + Kacheln */
+/* Über-uns: Foto-Feature – ganze Kachel als klickbare Foto-Fläche
+   (Platzhalter bis Louis' echtes Foto vorliegt; .mega-feature__bg ist die
+   Stelle für den späteren Foto-Tausch). */
 .mega-feature {
-  display: grid; gap: var(--space-md); align-content: start;
-  padding: var(--space-lg);
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  background-color: var(--surface-2);
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--primary) 7%, transparent) 1px, transparent 1px);
-  background-size: 20px 20px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 240px;
+  overflow: hidden;
+  border: 2px dashed var(--primary-dim);
+  border-radius: var(--radius-lg);
   transition: border-color var(--dur) var(--ease);
 }
 .mega-feature:hover { border-color: var(--primary); }
-.mega-feature__photo {
-  display: grid; place-content: center; justify-items: center; gap: 0.4rem;
-  aspect-ratio: 16 / 9;
-  border: 2px dashed var(--primary-dim); border-radius: var(--radius);
+
+.mega-feature__bg {
+  position: absolute; inset: 0; z-index: 0;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
   background: repeating-linear-gradient(45deg, var(--surface-2) 0 12px, var(--surface) 12px 24px);
 }
 .mega-feature__icon {
-  width: 30px; height: 30px; color: var(--primary);
+  width: 22px; height: 22px; color: var(--primary);
   fill: none; stroke: currentColor; stroke-width: 1.5;
   stroke-linecap: round; stroke-linejoin: round;
 }
 .mega-feature__tag {
-  font-family: var(--font-mono); font-size: 0.66rem;
+  font-family: var(--font-mono); font-size: 0.7rem;
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--primary);
 }
-.mega-feature__body { display: grid; gap: 0.15rem; }
+
+/* Scrim: dunkelt nach unten ab, damit Name/Rolle über jedem künftigen Foto lesbar bleiben */
+.mega-feature::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--bg) 90%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 55%, transparent) 42%,
+    transparent 72%
+  );
+}
+
+.mega-feature__body {
+  position: relative; z-index: 2;
+  display: grid; gap: 0.15rem;
+  padding: var(--space-md) var(--space-lg);
+}
 .mega-feature__name {
   font-family: var(--font-display); font-weight: 800;
   text-transform: uppercase; color: var(--ink); font-size: 1.05rem;
@@ -682,7 +736,7 @@ a.mega-tile:hover { border-color: var(--primary); }
 .mobile-menu [aria-disabled="true"] { cursor: default; color: var(--muted); }
 
 /* Cross-page Hash-Sprünge (z.B. leistungen.html#leistung-tiefbau) nicht unter dem fixen Header landen lassen */
-.service-card, #warum { scroll-margin-top: calc(72px + 1.25rem); }
+.service-card, .feature-row, #warum { scroll-margin-top: calc(72px + 1.25rem); }
 
 /* ------------------------------ Hero --------------------------------- */
 .hero { padding-top: calc(72px + var(--space-2xl)); }
@@ -809,6 +863,39 @@ a.mega-tile:hover { border-color: var(--primary); }
 }
 .service-card__title { font-size: var(--fs-h3); margin-bottom: var(--space-sm); }
 .service-card__text { color: var(--ink-2); margin: 0; font-size: var(--fs-body); }
+
+/* Leistungen-Seite: Gewichtung Hauptleistungen vs. Unterpunkte (nur leistungen.html) */
+.service-grid__label {
+  font-family: var(--font-mono); font-size: var(--fs-kicker);
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--primary); margin: 0 0 var(--space-md);
+}
+.service-grid__label--secondary { color: var(--muted); margin-top: var(--space-xl); }
+
+/* ------------------------- Feature-Rows (Zickzack, Hauptleistungen) --- */
+.feature-rows { display: grid; gap: var(--space-2xl); }
+.feature-row { display: grid; gap: var(--space-lg); align-items: center; }
+.feature-row__icon {
+  width: 40px; height: 40px;
+  margin-bottom: var(--space-md);
+  color: var(--primary);
+  fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.feature-row__title { font-size: 1.5rem; margin-bottom: var(--space-md); }
+.feature-row__text { color: var(--ink-2); max-width: 42ch; }
+
+.service-grid--secondary { gap: var(--space-sm); }
+.service-card--secondary { padding: var(--space-md); }
+.service-card--secondary::before { width: 2px; }
+.service-card--secondary .service-card__code { font-size: 0.7rem; color: var(--muted); }
+.service-card--secondary .service-card__icon { width: 24px; height: 24px; margin: 0 0 var(--space-sm); }
+.service-card--secondary .service-card__title { font-size: 0.95rem; margin-bottom: 0.2rem; }
+.service-card--secondary .service-card__text {
+  font-size: var(--fs-small); color: var(--muted);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.service-card--secondary:hover { transform: none; border-color: var(--primary); background: var(--surface-2); }
 
 /* ------------------------------ Über uns ----------------------------- */
 .about__grid { display: grid; gap: var(--space-2xl); align-items: start; }
@@ -1018,6 +1105,7 @@ a.mega-tile:hover { border-color: var(--primary); }
    ===================================================================== */
 @media (min-width: 600px) {
   .service-grid { grid-template-columns: repeat(2, 1fr); }
+  .service-grid--secondary { grid-template-columns: repeat(3, 1fr); }
   .why-grid { grid-template-columns: repeat(2, 1fr); }
   .form__row { grid-template-columns: 1fr 1fr; }
 }
@@ -1034,6 +1122,9 @@ a.mega-tile:hover { border-color: var(--primary); }
     min-height: 82vh;
   }
   .service-grid { grid-template-columns: repeat(3, 1fr); }
+  .feature-row { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
+  .feature-row--reverse .feature-row__media { order: 2; }
+  .feature-row--reverse .feature-row__body { order: 1; }
   .why-grid { grid-template-columns: repeat(4, 1fr); }
   .process-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
 
