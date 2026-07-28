@@ -257,6 +257,30 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* Hero-Kontext: übernimmt den fehlenden Section-Bottom-Abstand (Hero ist keine .section) */
 .hero__tread { margin-top: var(--space-2xl); }
 
+/* Tread zwischen Leistungen und dem Trust-Block (Ansprechpartner/Warum/Einsatzgebiet,
+   nur Startseite): ohne diese Regel verschwindet das 14px-Band in der vollen
+   --space-sec-Section-Padding (bis 8rem) auf beiden Seiten und wirkt dadurch eher wie
+   ein Darstellungsfehler als wie ein bewusstes Trennelement. Rückt die angrenzenden
+   Sektionen näher an den Tread heran – Vorbild ist die feste --space-2xl-Distanz von
+   .hero__tread. */
+#leistungen { padding-bottom: var(--space-2xl); }
+.tread + .trust { padding-top: var(--space-2xl); }
+
+/* Tread zwischen .trust (Einsatzgebiet) und "So läuft's ab" – gleiches Prinzip. */
+.trust { padding-bottom: var(--space-2xl); }
+.tread + #ablauf { padding-top: var(--space-2xl); }
+
+/* "So läuft's ab" → Anfrage-CTA: kein Tread dazwischen, aber ohne diese Regel stapeln
+   sich zwei volle --space-sec-Paddings (bis 16rem Gesamtabstand) – exakt das Muster,
+   das beim Warum/Ablauf-Übergang schon einmal wie ein Bruch gewirkt hat. */
+#ablauf { padding-bottom: var(--space-2xl); }
+.contact { padding-top: var(--space-2xl); }
+
+/* Ansprechpartner/Warum Molitor/Einsatzgebiet sind zu einem zusammenhängenden Bereich
+   verschmolzen (drei genestete <section> ohne eigenes --space-sec-Padding) – der Abstand
+   dazwischen kommt einheitlich von hier statt von drei einzelnen Section-Paddings. */
+.trust > * + * { margin-top: var(--space-2xl); }
+
 /* ------------------------------ Header ------------------------------- */
 .site-header {
   position: fixed;
@@ -530,12 +554,16 @@ html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
 .mega__inner--services { grid-template-columns: 2.3fr 1fr; align-items: start; }
 .mega__inner--about { grid-template-columns: 0.85fr 1.5fr; align-items: stretch; }
 
-/* Große Leistungs-Karten mit dezentem Ocker-Raster */
-.mega-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+/* Große Leistungs-Karten mit dezentem Ocker-Raster. grid-auto-rows: 1fr macht nur die
+   <li> gleich hoch – height: 100% auf der Karte selbst zieht die sichtbare Karte auf
+   diese Höhe hoch (ohne beides bleiben unterschiedlich lange Teaser-Texte sichtbar
+   unterschiedlich hoch, siehe .mega-tile). */
+.mega-cards { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: var(--space-md); }
 .mega-card {
   display: grid;
   gap: 0.4rem;
   align-content: start;
+  height: 100%;
   padding: var(--space-lg);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -642,11 +670,14 @@ html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
 }
 .mega-feature__role { font-size: var(--fs-small); color: var(--ink-2); }
 
-/* grid-auto-rows: 1fr -> alle Kacheln gleich hoch, „Socials" & „Rechtliches" schließen bündig ab (Change #3) */
+/* grid-auto-rows: 1fr -> alle <li> gleich hoch; height: 100% zieht die sichtbare Kachel
+   selbst auf diese Höhe (ohne das blieben "Socials"/"Rechtliches" trotz gleich hoher
+   <li> unterschiedlich hoch – geprüft, war ohne height:100% nicht bündig) (Change #3) */
 .mega-tiles { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: var(--space-sm); align-content: start; }
 .mega-tile {
   display: grid; grid-template-columns: auto 1fr; gap: 0.1rem 0.6rem;
   align-content: start;
+  height: 100%;
   padding: var(--space-md);
   border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface-2);
@@ -769,6 +800,17 @@ a.mega-tile:hover { border-color: var(--primary); }
   margin-inline: auto;
   padding: calc(72px + var(--space-2xl)) clamp(1rem, 4vw, 2rem) var(--space-xl);
 }
+/* Die erste Section nach dem Seitenkopf gehört inhaltlich noch zum Intro (z. B.
+   "Was wir für Sie bewegen" → Hauptleistungen) – volles --space-sec obendrauf
+   wirkt wie ein Bruch statt einer direkten Fortsetzung. Betrifft alle Unterseiten
+   mit diesem Aufbau (leistungen.html, ueber-uns.html, ablauf.html, anfrage.html). */
+.page-hero + .section { padding-top: var(--space-2xl); }
+/* .section__head hat sonst (z. B. auf der Startseite) margin-bottom: --space-2xl,
+   weil danach Grid-Inhalt in DERSELBEN Section folgt. Im .page-hero ist der Kopf
+   aber der einzige Inhalt – die Randmarge addiert sich zusätzlich zum eigenen
+   Padding-Bottom von .page-hero UND zum Padding-Top oben, macht den Übergang
+   unnötig groß. */
+.page-hero .section__head { margin-bottom: 0; }
 
 /* Foto-Platzhalter */
 .photo-frame {
