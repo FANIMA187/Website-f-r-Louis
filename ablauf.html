@@ -95,6 +95,7 @@
       <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
       <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
       <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
     </defs>
   </svg>
 
@@ -317,30 +318,124 @@
           einfach, klar und verbindlich – ohne Umwege.
         </p>
       </div>
+
+      <!-- Platzhalter-Angabe: "3 Tage bis zum Angebot" vor Launch mit Louis abstimmen/bestätigen
+           (bewusst "Tage" statt "Werktage" – falls Werktage gemeint sind, Text zurückändern) -->
+      <div class="process-highlight" data-reveal>
+        <svg class="process-highlight__icon" aria-hidden="true"><use href="#i-clock"></use></svg>
+        <span class="process-highlight__value">3 Tage</span>
+        <span class="process-highlight__text">von der Anfrage bis zum fertigen Angebot</span>
+      </div>
     </section>
 
     <!-- ============================== ABLAUF ============================== -->
     <section class="section process" aria-label="Projektablauf">
-      <ol class="process-grid">
-        <li class="step" data-reveal>
-          <span class="step__num">1</span>
-          <svg class="step__icon" aria-hidden="true"><use href="#i-chat"></use></svg>
-          <h2 class="step__title">Anfrage</h2>
-          <p class="step__text">Sie schildern uns Ihr Vorhaben – telefonisch, per WhatsApp oder über das Formular.</p>
-        </li>
-        <li class="step" data-reveal>
-          <span class="step__num">2</span>
-          <svg class="step__icon" aria-hidden="true"><use href="#i-clipboard"></use></svg>
-          <h2 class="step__title">Vor-Ort-Termin &amp; Angebot</h2>
-          <p class="step__text">Wir schauen uns die Fläche an und Sie erhalten eine klare, faire Einschätzung.</p>
-        </li>
-        <li class="step" data-reveal>
-          <span class="step__num">3</span>
-          <svg class="step__icon" aria-hidden="true"><use href="#i-truck"></use></svg>
-          <h2 class="step__title">Ausführung</h2>
-          <p class="step__text">Wir legen los – termintreu, sauber und mit Blick fürs Detail.</p>
-        </li>
-      </ol>
+      <div class="process-interactive" data-process data-reveal>
+
+        <ol class="process-steps">
+          <li>
+            <button type="button" class="process-step process-step--active" data-process-trigger data-step="1" aria-current="step" aria-controls="process-panel-1">
+              <span class="process-step__num">1</span>
+              <span class="process-step__body">
+                <span class="process-step__title">Anfrage</span>
+                <span class="process-step__text">Sie schildern uns Ihr Vorhaben – telefonisch, per WhatsApp oder über das Formular.</span>
+              </span>
+              <span class="process-connector" data-process-connector="1" aria-hidden="true">
+                <span class="process-connector__dot" data-process-connector-dot></span>
+                <span class="process-connector__dot" data-process-connector-dot></span>
+                <span class="process-connector__dot" data-process-connector-dot></span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="process-step" data-process-trigger data-step="2" aria-controls="process-panel-2">
+              <span class="process-step__num">2</span>
+              <span class="process-step__body">
+                <span class="process-step__title">Vor-Ort-Termin &amp; Angebot</span>
+                <span class="process-step__text">Wir schauen uns die Fläche an und Sie erhalten eine klare, faire Einschätzung.</span>
+              </span>
+              <span class="process-connector" data-process-connector="2" aria-hidden="true">
+                <span class="process-connector__dot" data-process-connector-dot></span>
+                <span class="process-connector__dot" data-process-connector-dot></span>
+                <span class="process-connector__dot" data-process-connector-dot></span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="process-step" data-process-trigger data-step="3" aria-controls="process-panel-3">
+              <span class="process-step__num">3</span>
+              <span class="process-step__body">
+                <span class="process-step__title">Ausführung</span>
+                <span class="process-step__text">Wir legen los – termintreu, sauber und mit Blick fürs Detail.</span>
+              </span>
+            </button>
+          </li>
+        </ol>
+
+        <div class="process-detail" aria-live="polite">
+
+          <div class="process-panel" data-process-panel data-step="1" id="process-panel-1">
+            <svg class="process-panel__icon" aria-hidden="true"><use href="#i-chat"></use></svg>
+            <h2 class="process-panel__title">Anfrage</h2>
+            <p class="process-panel__text">
+              Sie schildern uns Ihr Vorhaben – ob Aushub, Pflaster- oder Abbrucharbeiten – telefonisch,
+              per WhatsApp oder über das Formular. Wir melden uns zurück, um die nächsten Schritte zu besprechen.
+            </p>
+            <!-- Foto-Platzhalter: data-image markiert den künftigen Bildpfad – figure gegen echtes <img> tauschen, sobald ein Foto vorliegt -->
+            <figure class="photo-frame photo-frame--panel" data-image="assets/images/ablauf-anfrage.jpg">
+              <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
+              <figcaption class="photo-frame__label">
+                <span class="photo-frame__tag">Foto folgt</span>
+                <span class="photo-frame__hint">Eigene Aufnahme – Erstkontakt/Beratung</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="process-panel" data-process-panel data-step="2" id="process-panel-2" hidden>
+            <svg class="process-panel__icon" aria-hidden="true"><use href="#i-clipboard"></use></svg>
+            <h2 class="process-panel__title">Vor-Ort-Termin &amp; Angebot</h2>
+            <p class="process-panel__text">
+              Wir schauen uns die Fläche gemeinsam mit Ihnen vor Ort an und besprechen, was möglich und sinnvoll ist.
+              Daraus entsteht eine klare, faire Einschätzung, die Sie in Ruhe prüfen können.
+            </p>
+            <figure class="photo-frame photo-frame--panel" data-image="assets/images/ablauf-termin.jpg">
+              <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
+              <figcaption class="photo-frame__label">
+                <span class="photo-frame__tag">Foto folgt</span>
+                <span class="photo-frame__hint">Eigene Aufnahme – Vor-Ort-Termin</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="process-panel" data-process-panel data-step="3" id="process-panel-3" hidden>
+            <svg class="process-panel__icon" aria-hidden="true"><use href="#i-truck"></use></svg>
+            <h2 class="process-panel__title">Ausführung</h2>
+            <p class="process-panel__text">
+              Nach Ihrer Zusage legen wir los – termintreu, sauber und mit Blick fürs Detail,
+              bis die Fläche fertig übergeben werden kann.
+            </p>
+            <figure class="photo-frame photo-frame--panel" data-image="assets/images/ablauf-ausfuehrung.jpg">
+              <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
+              <figcaption class="photo-frame__label">
+                <span class="photo-frame__tag">Foto folgt</span>
+                <span class="photo-frame__hint">Eigene Aufnahme – Louis am Bagger</span>
+              </figcaption>
+            </figure>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="process-cta" data-reveal>
+        <p class="process-cta__text">
+          Überzeugt? Schildern Sie uns kurz Ihr Vorhaben — in der Regel halten Sie schon
+          nach 3 Tagen ein fertiges Angebot in der Hand.
+        </p>
+        <a class="btn btn--primary" href="anfrage.html">
+          Jetzt Termin anfragen
+          <svg class="icon icon--inline" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </div>
     </section>
 
   </main>

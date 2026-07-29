@@ -215,6 +215,96 @@ function initMobileAccordions() {
   });
 }
 
+/* ------------------------------ Ablauf: Schritte-Umschalter ---------- */
+function initProcessSteps() {
+  const wrapper = document.querySelector('[data-process]');
+  if (!wrapper) return;
+  const triggers = Array.from(wrapper.querySelectorAll('[data-process-trigger]'));
+  const panels = Array.from(wrapper.querySelectorAll('[data-process-panel]'));
+  const connectors = Array.from(wrapper.querySelectorAll('[data-process-connector]'));
+  const allDots = connectors.flatMap((c) => Array.from(c.querySelectorAll('[data-process-connector-dot]')));
+  if (!triggers.length || !panels.length) return;
+
+  let currentStep = triggers.find((t) => t.classList.contains('process-step--active'))?.dataset.step || triggers[0].dataset.step;
+  let pendingTimers = [];
+
+  // Dauerhafte, dezente Loop-Pulsierung auf dem Connector zum jeweils nächsten
+  // Schritt – läuft, solange dieser Schritt aktiv ist (nicht nur beim Klick).
+  const updateLoop = (step) => {
+    if (prefersReducedMotion) return;
+    connectors.forEach((connector) => {
+      connector.classList.toggle('process-connector--loop', connector.dataset.processConnector === step);
+    });
+  };
+
+  const activate = (step) => {
+    triggers.forEach((trigger) => {
+      const isActive = trigger.dataset.step === step;
+      trigger.classList.toggle('process-step--active', isActive);
+      if (isActive) trigger.setAttribute('aria-current', 'step');
+      else trigger.removeAttribute('aria-current');
+    });
+    panels.forEach((panel) => {
+      const isActive = panel.dataset.step === step;
+      panel.hidden = !isActive;
+      if (isActive) {
+        panel.classList.remove('process-panel--enter');
+        void panel.offsetWidth; // Reflow erzwingen, damit die Animation neu startet
+        panel.classList.add('process-panel--enter');
+      } else {
+        panel.classList.remove('process-panel--enter');
+      }
+    });
+    updateLoop(step);
+  };
+
+  updateLoop(currentStep); // Loop läuft schon beim Laden auf dem Default-Schritt
+
+  // Rein dekorativ: lässt die Verbindungs-Punkte zwischen dem alten und dem neuen
+  // Schritt kurz nacheinander aufleuchten. Blockiert nie activate() oben.
+  const lightConnectors = (fromStep, toStep) => {
+    pendingTimers.forEach(clearTimeout);
+    pendingTimers = [];
+    allDots.forEach((dot) => dot.classList.remove('process-connector__dot--lit'));
+
+    const from = Number(fromStep);
+    const to = Number(toStep);
+    const dir = to > from ? 1 : -1;
+    const lower = Math.min(from, to);
+    const upper = Math.max(from, to);
+
+    const segments = [];
+    for (let s = lower; s < upper; s++) segments.push(s);
+    if (dir < 0) segments.reverse();
+
+    const dots = segments.flatMap((segFrom) => {
+      const connector = connectors.find((c) => Number(c.dataset.processConnector) === segFrom);
+      if (!connector) return [];
+      const d = Array.from(connector.querySelectorAll('[data-process-connector-dot]'));
+      return dir > 0 ? d : d.slice().reverse();
+    });
+
+    dots.forEach((dot, i) => {
+      const onId = setTimeout(() => {
+        dot.classList.add('process-connector__dot--lit');
+        const offId = setTimeout(() => dot.classList.remove('process-connector__dot--lit'), 220);
+        pendingTimers.push(offId);
+      }, i * 70);
+      pendingTimers.push(onId);
+    });
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const targetStep = trigger.dataset.step;
+      if (targetStep === currentStep) return;
+      if (!prefersReducedMotion && connectors.length) lightConnectors(currentStep, targetStep);
+      activate(targetStep); // sofort, unverändert wie bisher – keine Verzögerung
+      currentStep = targetStep;
+    });
+  });
+}
+
 /* ------------------------------ Platzhalter-Links ------------------- */
 /* aria-disabled-Links (Socials, Impressum, Datenschutz) führen nirgends hin. */
 function initDisabledLinks() {
@@ -229,6 +319,7 @@ initYear();
 initHeaderScroll();
 initMobileMenu();
 initMobileAccordions();
+initProcessSteps();
 initNavDropdowns();
 initDisabledLinks();
 initForm();

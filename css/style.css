@@ -805,12 +805,44 @@ a.mega-tile:hover { border-color: var(--primary); }
    wirkt wie ein Bruch statt einer direkten Fortsetzung. Betrifft alle Unterseiten
    mit diesem Aufbau (leistungen.html, ueber-uns.html, ablauf.html, anfrage.html). */
 .page-hero + .section { padding-top: var(--space-2xl); }
+/* Ablauf-Seite: interaktiver Block soll kompakter direkt unter dem Seitenkopf sitzen */
+.page-hero + .section.process { padding-top: var(--space-lg); }
+.page-hero:has(+ .section.process) { padding-bottom: var(--space-lg); }
 /* .section__head hat sonst (z. B. auf der Startseite) margin-bottom: --space-2xl,
    weil danach Grid-Inhalt in DERSELBEN Section folgt. Im .page-hero ist der Kopf
    aber der einzige Inhalt – die Randmarge addiert sich zusätzlich zum eigenen
    Padding-Bottom von .page-hero UND zum Padding-Top oben, macht den Übergang
    unnötig groß. */
 .page-hero .section__head { margin-bottom: 0; }
+
+/* Ablauf-Seite: Eye-Catcher (z. B. "3 Tage bis zum Angebot") im Seitenkopf */
+.process-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--space-lg);
+  padding: 0.5rem 0.9rem 0.5rem 0.7rem;
+  border: 1px solid var(--primary-dim);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.process-highlight__icon {
+  width: 18px; height: 18px;
+  color: var(--primary);
+  fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+  flex: none;
+}
+.process-highlight__value {
+  font-family: var(--font-display);
+  font-weight: 830;
+  font-variation-settings: 'wght' 830, 'wdth' 125;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--primary);
+  white-space: nowrap;
+}
+.process-highlight__text { color: var(--ink-2); font-size: var(--fs-small); }
 
 /* Foto-Platzhalter */
 .photo-frame {
@@ -1011,6 +1043,153 @@ a.mega-tile:hover { border-color: var(--primary); }
 .step__title { font-size: var(--fs-h3); margin-bottom: var(--space-xs); }
 .step__text { color: var(--ink-2); margin: 0; font-size: var(--fs-body); }
 
+/* ------------------------- Ablauf – interaktive Ansicht (nur ablauf.html) */
+.process-interactive { display: grid; gap: var(--space-lg); }
+
+.process-steps { display: grid; gap: var(--space-xl); align-content: start; }
+
+.process-step {
+  position: relative; /* Anker für .process-connector */
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--space-md);
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: border-color var(--dur) var(--ease),
+              background-color var(--dur) var(--ease);
+}
+.process-step:not(.process-step--active):hover { border-color: var(--border-hi); background: var(--surface-2); }
+.process-step--active { border-color: var(--primary); background: var(--surface-2); }
+
+.process-step__num {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  transition: color var(--dur) var(--ease),
+              background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.process-step--active .process-step__num {
+  color: var(--bg); background: var(--primary); border-color: var(--primary);
+}
+
+.process-step__body { display: grid; gap: 0.3rem; }
+.process-step__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.process-step__text { color: var(--ink-2); font-size: var(--fs-small); margin: 0; }
+
+.process-connector {
+  position: absolute;
+  top: 100%;
+  left: var(--space-lg);
+  width: 40px;
+  height: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  pointer-events: none;
+}
+.process-connector__dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--border-hi);
+  transition: background-color 0.18s var(--ease),
+              transform 0.18s var(--ease),
+              box-shadow 0.18s var(--ease);
+}
+.process-connector__dot--lit {
+  background: var(--primary);
+  box-shadow: 0 0 5px 1px color-mix(in srgb, var(--primary) 55%, transparent);
+  transform: scale(1.4);
+}
+
+@keyframes process-connector-pulse {
+  0%, 100% { background: var(--border-hi); box-shadow: none; transform: scale(1); }
+  50% {
+    background: var(--primary);
+    box-shadow: 0 0 5px 1px color-mix(in srgb, var(--primary) 55%, transparent);
+    transform: scale(1.4);
+  }
+}
+.process-connector--loop .process-connector__dot {
+  animation: process-connector-pulse 1.6s ease-in-out infinite;
+}
+.process-connector--loop .process-connector__dot:nth-child(1) { animation-delay: 0s; }
+.process-connector--loop .process-connector__dot:nth-child(2) { animation-delay: 0.2s; }
+.process-connector--loop .process-connector__dot:nth-child(3) { animation-delay: 0.4s; }
+
+.process-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+.process-panel { display: grid; gap: var(--space-xs); }
+.process-panel[hidden] { display: none; }
+.process-panel__icon {
+  width: 40px; height: 40px;
+  color: var(--primary);
+  fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.process-panel__title { font-size: var(--fs-h3); }
+.process-panel__text { color: var(--ink-2); margin: 0; }
+.photo-frame--panel { aspect-ratio: 16 / 9; max-height: 140px; padding: var(--space-md); }
+
+@keyframes process-panel-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.process-panel--enter { animation: process-panel-enter 0.35s var(--ease); }
+
+.process-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: transform var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              background-color var(--dur) var(--ease);
+}
+.process-cta:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hi);
+  background: var(--surface-2);
+}
+.process-cta .process-cta__text { color: var(--ink-2); margin: 0; max-width: 46ch; font-size: var(--fs-lead); }
+.process-cta .btn--primary .icon--inline { transition: transform 0.2s var(--ease); }
+.process-cta .btn--primary:hover .icon--inline { transform: translateX(4px); }
+
 /* ------------------------------ Einzugsgebiet ------------------------ */
 .area__grid { display: grid; gap: var(--space-2xl); align-items: center; }
 .area__media { display: grid; justify-items: center; }
@@ -1169,6 +1348,7 @@ a.mega-tile:hover { border-color: var(--primary); }
   .feature-row--reverse .feature-row__body { order: 1; }
   .why-grid { grid-template-columns: repeat(4, 1fr); }
   .process-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+  .process-interactive { grid-template-columns: 0.85fr 1.15fr; align-items: start; gap: var(--space-2xl); }
 
   .about__grid { grid-template-columns: 0.8fr 1.2fr; gap: var(--space-2xl); }
   .area__grid { grid-template-columns: 1.1fr 0.9fr; }
