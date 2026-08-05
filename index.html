@@ -23,6 +23,8 @@
 
   <!-- Display-Font vorab laden (Hero-Headline & Wortmarke) -->
   <link rel="preload" href="assets/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Hero-Hintergrundbild vorab laden (LCP) -->
+  <link rel="preload" href="assets/images/webp/startseite-hero.webp" as="image" fetchpriority="high">
 
   <link rel="stylesheet" href="css/style.css">
 
@@ -246,6 +248,18 @@
       <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
         <svg class="icon"><use href="#i-menu"></use></svg>
       </button>
+
+      <!-- Schlichtes Menü-Panel nur für den Hero-Zustand auf Desktop (siehe
+           initHeroMenuToggle in main.js) – unabhängig vom .mobile-menu unten. -->
+      <div class="hero-menu" id="hero-menu" data-hero-menu hidden>
+        <ul class="hero-menu__list">
+          <li><a href="leistungen.html">Leistungen</a></li>
+          <li><a href="ueber-uns.html">Über uns</a></li>
+          <li><a href="ablauf.html">Ablauf</a></li>
+          <li><a href="#contact-title">Kontakt</a></li>
+        </ul>
+        <a class="btn btn--primary btn--sm" href="anfrage.html">Grund schaffen</a>
+      </div>
     </div>
 
     <!-- Mobiles Overlay-Menü: Dropdowns werden zu Akkordeons -->
@@ -313,35 +327,39 @@
 
     <!-- =============================== HERO =============================== -->
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero__inner">
-        <div class="hero__content">
-          <p class="kicker" data-reveal>Erd- &amp; Tiefbau · <span class="ph">[Region]</span></p>
-          <h1 class="hero__title" id="hero-title" data-reveal>
-            Wir schaffen den Grund,<br>auf dem <span class="hero__title-accent">Sie bauen.</span>
-          </h1>
-          <p class="hero__subline" data-reveal>
-            Erdarbeiten, Aushub und Pflaster – zuverlässig, sauber und mit persönlichem
-            Kontakt vom Chef selbst. Ihr Einzelbetrieb für Fundament-, Pool- und
-            Hausbau-Aushub in der Region.
-          </p>
-          <div class="hero__actions" data-reveal>
-            <a class="btn btn--primary" href="anfrage.html">
-              Projekt anfragen
-              <svg class="icon icon--inline"><use href="#i-arrow"></use></svg>
-            </a>
-            <a class="btn btn--ghost" href="leistungen.html">Leistungen ansehen</a>
-          </div>
+      <div class="hero__pin" data-hero-pin>
+        <div class="hero__bg" data-hero-bg>
+          <img
+            class="hero__bg-img"
+            src="assets/images/webp/startseite-hero.webp"
+            alt="Mobilbagger verlädt Erdaushub auf einen Muldenkipper auf einer Baustelle in der Abenddämmerung"
+            width="2400" height="1350"
+            fetchpriority="high" decoding="async"
+          >
+          <div class="hero__bg-overlay" aria-hidden="true"></div>
         </div>
 
-        <div class="hero__media" data-reveal>
-          <!-- Foto-Platzhalter: später echtes Bild (Louis am Bagger / auf der Baustelle) -->
-          <figure class="photo-frame photo-frame--hero">
-            <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
-            <figcaption class="photo-frame__label">
-              <span class="photo-frame__tag">Foto folgt</span>
-              <span class="photo-frame__hint">Eigene Aufnahme – Louis am Bagger</span>
-            </figcaption>
-          </figure>
+        <div class="hero__inner">
+          <div class="hero__content">
+            <div class="hero__content-primary" data-hero-primary>
+              <p class="kicker" data-reveal>L. Molitor · Erd- &amp; Tiefbau · <span class="ph">[Region]</span></p>
+              <h1 class="hero__title" id="hero-title" data-reveal>
+                Wir schaffen den Grund,<br>auf dem <span class="hero__title-accent">Sie bauen.</span>
+              </h1>
+              <p class="hero__subline" data-reveal>
+                Erdarbeiten, Aushub und Pflaster – zuverlässig, sauber und mit persönlichem
+                Kontakt vom Chef selbst. Ihr Einzelbetrieb für Fundament-, Pool- und
+                Hausbau-Aushub in der Region.
+              </p>
+              <div class="hero__actions" data-reveal>
+                <a class="btn btn--primary" href="anfrage.html">
+                  Projekt anfragen
+                  <svg class="icon icon--inline"><use href="#i-arrow"></use></svg>
+                </a>
+                <a class="btn btn--ghost" href="leistungen.html">Leistungen ansehen</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -353,15 +371,18 @@
 
     <!-- ============================ LEISTUNGEN ============================ -->
     <section class="section services" id="leistungen" aria-labelledby="services-title">
-      <div class="section__head">
-        <p class="section__kicker" data-reveal>Leistungen</p>
-        <h2 class="section__title" id="services-title" data-reveal>Was wir für Sie bewegen</h2>
-        <p class="section__intro" data-reveal>
+      <!-- data-hero-reveal: nimmt diese drei Elemente aus dem generischen
+           [data-reveal]-Batch (main.js) heraus - sie werden stattdessen als
+           Teil der Hero-Pin-Timeline eingeblendet, überlappend mit dem
+           Ausblenden des Hero (echter Crossfade, siehe initHeroPin). -->
+      <div class="section__head section__head--compact">
+        <p class="section__kicker" data-reveal data-hero-reveal>Leistungen</p>
+        <h2 class="section__title" id="services-title" data-reveal data-hero-reveal>Was wir für Sie bewegen</h2>
+        <p class="section__intro" data-reveal data-hero-reveal>
           Vom ersten Spatenstich bis zur fertigen Fläche – wir übernehmen die Arbeiten,
           die Ihr Bauvorhaben tragen. Sauber ausgeführt, klar abgesprochen, termintreu.
         </p>
       </div>
-
       <ul class="service-grid">
         <li class="service-card" id="leistung-tiefbau" data-reveal>
           <span class="service-card__code">001</span>

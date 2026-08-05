@@ -255,7 +255,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .tread::after { bottom: 0; }
 
 /* Hero-Kontext: übernimmt den fehlenden Section-Bottom-Abstand (Hero ist keine .section) */
-.hero__tread { margin-top: var(--space-2xl); }
+.hero__tread { margin-top: var(--space-lg); }
 
 /* Tread zwischen Leistungen und dem Trust-Block (Ansprechpartner/Warum/Einsatzgebiet,
    nur Startseite): ohne diese Regel verschwindet das 14px-Band in der vollen
@@ -263,7 +263,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    ein Darstellungsfehler als wie ein bewusstes Trennelement. Rückt die angrenzenden
    Sektionen näher an den Tread heran – Vorbild ist die feste --space-2xl-Distanz von
    .hero__tread. */
-#leistungen { padding-bottom: var(--space-2xl); }
+/* Der Leistungen-Teaser läuft zusätzlich über den Hero-Pin, der eigentliche
+   (bleibende) Section-Kopf sitzt aber hier in #leistungen selbst - volles
+   .section-Padding oben wäre trotzdem unnötig leerer Scroll-Raum direkt nach
+   dem Hero, daher weiterhin die knappere --space-lg statt --space-sec. */
+#leistungen { padding-top: var(--space-lg); padding-bottom: var(--space-2xl); }
 .tread + .trust { padding-top: var(--space-2xl); }
 
 /* Tread zwischen .trust (Einsatzgebiet) und "So läuft's ab" – gleiches Prinzip. */
@@ -298,6 +302,14 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   border-bottom-color: var(--border);
 }
 .site-header__inner {
+  /* KEIN position:relative hier: .mega (Mega-Menü) ist position:absolute mit
+     left:0;right:0 und braucht .site-header (position:fixed, volle Viewport-
+     Breite) als Bezugsrahmen, um vollflächig zu sein. Ein position:relative
+     hier würde .mega (und alles andere absolut Positionierte im Header) auf
+     diese 1200px-max-width-Box einschränken - genau das war die Ursache
+     einer Regression (gemessen: .mega nur noch 1200px statt 1440px breit,
+     sitework-weit, nicht nur im Hero-Zustand). .nav-toggle/.hero-menu
+     kompensieren das über eine eigene right-Formel weiter unten. */
   max-width: var(--maxw);
   margin-inline: auto;
   padding: 0.9rem clamp(1rem, 4vw, 2rem);
@@ -317,6 +329,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   border-radius: var(--radius);
   background: var(--surface);
   flex: none;
+  transition: width var(--dur) var(--ease), height var(--dur) var(--ease),
+              background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .brand__text { display: grid; line-height: 1; }
 .brand__pre {
@@ -391,6 +405,94 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   cursor: pointer;
 }
 .nav-toggle:hover { border-color: var(--primary); color: var(--primary-hi); }
+
+/* Hero-Header-Zustand: nur solange der Hero-Pin aktiv ist. Klasse wird
+   ausschließlich per JS gesetzt (main.js initHeroPin) – ohne JS/CDN-Ausfall/
+   prefers-reduced-motion bleibt der Header unverändert wie sonst (Claude.md §9).
+   Icon-Logo und Hamburger stehen hier frei (kein Kasten/Rahmen), Logo größer. */
+.site-header--hero.is-scrolled {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+.site-header--hero .brand__text { opacity: 0; }
+.site-header--hero .brand__mark,
+.site-header--hero .nav-toggle {
+  background: none;
+  border-color: transparent;
+}
+.site-header--hero .brand__mark { width: 52px; height: 52px; }
+.site-header--hero .nav-toggle { color: var(--primary); }
+
+/* .site-header--hero-capable wird EINMALIG beim Setup gesetzt (main.js
+   initHeroPin, nur Startseite) und nie wieder entfernt – der Hamburger bleibt
+   damit auf Desktop dauerhaft display:inline-grid, nur opacity/pointer-events
+   wechseln zwischen den beiden Header-Zuständen. Das vermeidet, dass display
+   zwischen den Zuständen hin- und herspringt (Ursache für hängenbleibende
+   Zustände beim schnellen Hoch-/Runterscrollen).
+   opacity/pointer-events NUR als Default hier – sobald main.js läuft, setzt
+   GSAP beides per Inline-Style animiert (gewinnt gegenüber dieser Regel).
+   Absichtlich KEIN ".site-header--hero-capable.site-header--hero"-Override
+   für opacity:1 – sonst würde die Klasse den Wert schon vor dem GSAP-Tween
+   hart auf 1 setzen und das Einblenden liefe ins Leere (kein sichtbarer
+   Crossfade mit der ausfadenden .main-nav mehr).
+   position:absolute (statt normalem Flex-Kind): .site-header__inner nutzt
+   justify-content:space-between - ein permanent im Fluss stehendes drittes
+   Kind (auch unsichtbar) verschiebt .main-nav aus seiner rechtsbündigen
+   Position (gemessen: 214px zu weit links). Deshalb komplett aus dem
+   Flex-Fluss raus, wie es display:none früher auch getan hat. margin-top
+   statt transform:translateY zur Vertikal-Zentrierung, weil GSAP transform
+   für die x-Einblend-Animation selbst braucht (würde sich sonst überschreiben).
+   right per Formel statt festem clamp(): .site-header__inner hat kein
+   position:relative mehr (siehe dort), .nav-toggle positioniert sich also
+   relativ zu .site-header (volle Viewport-Breite) statt zur 1200px-max-width-
+   Box - die Formel rechnet den Abstand zwischen Viewport- und Box-Kante
+   wieder mit ein, damit der Hamburger optisch an derselben Stelle bleibt. */
+@media (min-width: 900px) {
+  .site-header--hero .main-nav { pointer-events: none; }
+  .site-header--hero-capable .nav-toggle {
+    position: absolute;
+    top: 50%;
+    margin-top: -22px;
+    right: calc(max(0px, (100vw - var(--maxw)) / 2) + clamp(1rem, 4vw, 2rem));
+    display: inline-grid;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* Eigenes, schlichtes Menü-Panel für den Hero-Zustand (Desktop) – bewusst NICHT
+   das .mobile-menu-Overlay, das ist für schmale Breiten mit Akkordeons gebaut.
+   Nach dem Vorbild von .mini (Kontakt-Dropdown): kleine, rechtsbündige Card.
+   right per Formel wie bei .nav-toggle (s. o.), aus demselben Grund. */
+.hero-menu {
+  position: absolute;
+  top: 100%;
+  right: calc(max(0px, (100vw - var(--maxw)) / 2) + clamp(1rem, 4vw, 2rem));
+  margin-top: 0.5rem;
+  min-width: 200px;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 40px -26px rgba(0, 0, 0, 0.8);
+}
+.hero-menu[hidden] { display: none; }
+.hero-menu__list { display: grid; gap: 0.1rem; margin-bottom: var(--space-md); }
+.hero-menu__list a {
+  display: block;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: background-color var(--dur) var(--ease);
+}
+.hero-menu__list a:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.hero-menu .btn { width: 100%; justify-content: center; }
 
 /* Mobiles Menü */
 .mobile-menu {
@@ -770,15 +872,72 @@ a.mega-tile:hover { border-color: var(--primary); }
 .service-card, .feature-row, #warum { scroll-margin-top: calc(72px + 1.25rem); }
 
 /* ------------------------------ Hero --------------------------------- */
-.hero { padding-top: calc(72px + var(--space-2xl)); }
+/* .hero__pin ist die Pin-Fläche fürs Scroll-Trigger (main.js initHeroPin):
+   exakt 1 Viewport hoch (100svh statt vh, damit mobile Adressleisten die
+   Pin-Distanz nicht verfälschen). .hero__tread liegt bewusst AUSSERHALB
+   dieses Wrappers, damit er erst nach dem Lösen des Pins erscheint.
+   min-height:100svh auf .hero selbst: initHeroPin() nutzt pinSpacing:false
+   (kein reservierter Nachlauf-Leerraum, siehe main.js) - dabei trägt
+   .hero__pin während des Pins (position:fixed) 0px zur Höhe seines
+   Elternelements .hero bei. Ohne diese Regel würde .hero auf die Höhe von
+   .hero__tread (~38px) zusammenschrumpfen und dieses beim Pin-Start/-Ende
+   sichtbar nach oben springen lassen. */
+.hero { position: relative; min-height: 100svh; }
+.hero__pin {
+  /* z-index nötig (gemessen, nicht offensichtlich): [data-reveal]-Elemente
+     bekommen weiter unten will-change:transform,opacity (Reveal-Batches) -
+     das erzeugt für sie einen eigenen Stacking-Context, wodurch sie trotz
+     .hero__pin position:fixed darüber gemalt würden (später im DOM, gleiche
+     auto-Stack-Ebene) statt dahinter zu verschwinden, solange der Pin aktiv
+     ist. War vorher nie sichtbar, weil nichts hinter dem Pin verschwinden
+     musste - erst mit initHeroPin()/pinSpacing:false (main.js) relevant. */
+  z-index: 5;
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+}
+
+.hero__bg { position: absolute; inset: 0; z-index: 0; }
+.hero__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 55%;
+  display: block;
+}
+/* Scrim: dunkelt von unten UND von der Textseite (links) ab, damit der
+   Hero-Text auf Mobile (Blöcke untereinander) wie auf Desktop (Text linksbündig
+   über breitem Bild) gleichermaßen lesbar bleibt. Gleiches Muster wie
+   .mega-feature::after, nur zweiseitig kombiniert. */
+.hero__bg-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--bg) 50%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 22%, transparent) 50%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--bg) 35%, transparent) 0%,
+      transparent 55%
+    );
+}
+
 .hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: clamp(1rem, 4vw, 2rem);
-  display: grid;
-  gap: var(--space-xl);
-  align-items: center;
 }
+.hero__content { display: block; }
+
 .hero__title {
   font-size: var(--fs-hero);
   font-variation-settings: 'wght' 830, 'wdth' 125;
@@ -880,6 +1039,10 @@ a.mega-tile:hover { border-color: var(--primary); }
   padding: var(--space-sec) clamp(1rem, 4vw, 2rem);
 }
 .section__head { max-width: 60ch; margin-bottom: var(--space-2xl); }
+/* Startseite: #leistungen folgt direkt auf den Hero-Pin, der den Leistungen-
+   Teaser bereits gezeigt hat - der volle --space-2xl-Abstand wirkt hier wie
+   unnötig viel Luft vor der ersten Kartenreihe. */
+.section__head--compact { margin-bottom: var(--space-xl); }
 .section__title { font-size: var(--fs-h2); }
 .section__intro {
   font-size: var(--fs-lead);
@@ -1320,6 +1483,7 @@ a.mega-tile:hover { border-color: var(--primary); }
 /* ------------------------------ Reveal (JS-gesteuert) ---------------- */
 /* Sichtbar ohne JS. Initial-States setzt main.js nur, wenn JS + Motion aktiv. */
 .js-anim [data-reveal] { will-change: transform, opacity; }
+.js-anim [data-hero-bg] { will-change: transform, opacity; }
 
 /* =====================================================================
    Responsive – Mobile-First, ab hier größer
@@ -1336,12 +1500,6 @@ a.mega-tile:hover { border-color: var(--primary); }
   .nav-toggle { display: none; }
   .mobile-menu { display: none !important; }
 
-  .hero__inner {
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: var(--space-2xl);
-    padding-top: var(--space-2xl);
-    min-height: 82vh;
-  }
   .service-grid { grid-template-columns: repeat(3, 1fr); }
   .feature-row { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
   .feature-row--reverse .feature-row__media { order: 2; }
