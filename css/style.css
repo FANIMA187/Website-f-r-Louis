@@ -882,7 +882,13 @@ a.mega-tile:hover { border-color: var(--primary); }
    Elternelements .hero bei. Ohne diese Regel würde .hero auf die Höhe von
    .hero__tread (~38px) zusammenschrumpfen und dieses beim Pin-Start/-Ende
    sichtbar nach oben springen lassen. */
-.hero { position: relative; min-height: 100svh; }
+/* min-height/height jeweils zweizeilig (vh vor svh): reine Kaskaden-
+   Fallback-Technik, kein Browser-Sniffing. Browser ohne svh-Unterstützung
+   (z. B. Safari < 15.4, Firefox < 101) verwerfen die svh-Zeile als
+   ungültig und behalten die vh-Zeile davor; moderne Browser überschreiben
+   sie mit dem präziseren svh-Wert (blendet mobile Adressleisten korrekt
+   aus der Höhenberechnung aus). */
+.hero { position: relative; min-height: 100vh; min-height: 100svh; }
 .hero__pin {
   /* z-index nötig (gemessen, nicht offensichtlich): [data-reveal]-Elemente
      bekommen weiter unten will-change:transform,opacity (Reveal-Batches) -
@@ -893,6 +899,7 @@ a.mega-tile:hover { border-color: var(--primary); }
      musste - erst mit initHeroPin()/pinSpacing:false (main.js) relevant. */
   z-index: 5;
   position: relative;
+  height: 100vh;
   height: 100svh;
   overflow: hidden;
   display: flex;
@@ -901,12 +908,27 @@ a.mega-tile:hover { border-color: var(--primary); }
 }
 
 .hero__bg { position: absolute; inset: 0; z-index: 0; }
+/* Mobile-First: object-position-X als eigener Wert unten in einem
+   min-width-Breakpoint überschrieben (gleiches 900px-Muster wie beim
+   Nav-Umbruch, siehe media query weiter oben). Grund: object-fit:cover
+   beschneidet bei Smartphone-Seitenverhältnissen (~0,46, sehr viel
+   schmaler als das 1,78-Bild) NUR horizontal, nie vertikal - object-
+   position-Y bleibt dadurch auf Mobile wirkungslos, nur der X-Wert
+   entscheidet über den sichtbaren Ausschnitt. 50% zeigt Baggerarm +
+   kompletten Muldenkipper (mit Nutzer per Screenshot-Vergleich
+   verschiedener X-Werte an 390×844/428×926 abgestimmt); der bisherige,
+   vom Kunden bestätigte 55%-Wert bleibt ab 900px (Tablet/Desktop, wo
+   durch das breitere Seitenverhältnis kaum noch beschnitten wird)
+   unverändert. */
 .hero__bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 55% 55%;
+  object-position: 50% 55%;
   display: block;
+}
+@media (min-width: 900px) {
+  .hero__bg-img { object-position: 55% 55%; }
 }
 /* Scrim: dunkelt von unten UND von der Textseite (links) ab, damit der
    Hero-Text auf Mobile (Blöcke untereinander) wie auf Desktop (Text linksbündig
