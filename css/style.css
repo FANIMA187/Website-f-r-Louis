@@ -961,6 +961,40 @@ a.mega-tile:hover { border-color: var(--primary); }
       transparent 55%
     );
 }
+/* Mobile-Kontrast-Fix: .hero__pin zentriert seinen Inhalt vertikal (s. o.),
+   Kicker/Subline sitzen dadurch überwiegend in der oberen Hälfte - genau
+   dort, wo der obige (fürs alte, dunklere Desktop-Bild austarierte)
+   Verlauf am schwächsten verdunkelt (nahe 0%, "to top" ist an dieser Stelle
+   fast transparent). Das neue Mobile-Bild (startseite-hero-mobil.webp) ist
+   zudem deutlich heller (Tageslicht statt Dämmerung). Eigener, stärkerer
+   Verlauf nur für <900px, von oben nach unten statt von unten nach oben
+   gewichtet, mit echten Screenshots an 390×844/428×926 gegengeprüft (nicht
+   geschätzt). Die horizontale Linksverdunkelung entfällt hier bewusst -
+   auf Mobile ist der Text ohnehin blockweise volle Breite, nicht wie auf
+   Desktop nur linksseitig neben dem Bild. Desktop-Regel oben unverändert. */
+@media (max-width: 899px) {
+  .hero__bg-overlay {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg) 78%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 60%, transparent) 26%,
+      color-mix(in srgb, var(--bg) 48%, transparent) 62%,
+      color-mix(in srgb, var(--bg) 25%, transparent) 82%,
+      color-mix(in srgb, var(--bg) 48%, transparent) 100%
+    );
+  }
+  /* Zusätzliche, bildunabhängige Absicherung: dezenter zweilagiger
+     Schatten (enger Kontaktschatten + weicherer, größerer) aus --bg -
+     hält Kicker/Subline lesbar, auch falls der Bildausschnitt/-inhalt
+     sich später nochmal ändert. .kicker ist aktuell hero-exklusiv (kein
+     .section__kicker), trotzdem hier über .hero gescoped zur Sicherheit. */
+  .hero .kicker,
+  .hero__subline {
+    text-shadow:
+      0 1px 2px color-mix(in srgb, var(--bg) 85%, transparent),
+      0 3px 14px color-mix(in srgb, var(--bg) 70%, transparent);
+  }
+}
 
 .hero__inner {
   position: relative;
