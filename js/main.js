@@ -282,23 +282,51 @@ function initHeroPin(gsap, ScrollTrigger) {
     navToggle?.setAttribute('aria-controls', active ? 'hero-menu' : 'mobile-menu');
   };
 
+  // Mobile-Pendant zu setHeaderHero(): NUR die Optik wechselt (Icon-only-
+  // Logo, Hamburger ohne Box/Rahmen via .site-header--hero, s. style.css) -
+  // navToggle selbst wird hier NIE angefasst und bleibt damit immer beim
+  // CSS-Default (sichtbar, klickbar). Eigenständige Funktion statt eines
+  // Zweigs in setHeaderHero, damit die dort bewusst zusammengehörigen
+  // navToggle-Opacity/PointerEvents-Tweens unter keinen Umständen versehentlich
+  // auch auf Mobile ausgeführt werden können.
+  const setHeaderCompactMobile = (active) => {
+    if (!header || window.innerWidth >= 900) return;
+    header.classList.toggle('site-header--hero', active);
+    gsap.to(brandText, {
+      opacity: active ? 0 : 1, x: active ? -12 : 0,
+      duration: active ? 0.3 : 0.4, ease: 'power2.out',
+    });
+  };
+
   // Seite startet bei Scroll 0 = innerhalb des Pin-Bereichs: sofortiger
   // Initial-State ohne Fade (Claude.md §9: Initial-States per JS setzen).
   // .site-header--hero-capable wird EINMALIG und dauerhaft gesetzt (nur hier,
   // da initHeroPin auf anderen Seiten mangels [data-hero-pin] gar nicht erst
   // ausgeführt wird) - macht den Hamburger auf Desktop layout-technisch
   // dauerhaft verfügbar, ohne dass CSS "display" zwischen den Header-
-  // Zuständen wechseln muss (siehe style.css).
-  // Nur ab 900px (Desktop) - auf Mobile bleibt der Header im normalen
-  // Grundzustand (Hamburger regulär sichtbar+klickbar, s. setHeaderHero oben).
+  // Zuständen wechseln muss (siehe style.css). Nur Desktop bekommt diese
+  // zusätzliche Klasse - sie ist es, die (nur ab 900px, s. style.css)
+  // navToggle per CSS-Default auf opacity:0/pointer-events:none setzt.
+  // Mobile bekommt unten im else-Zweig dieselbe Optik über .site-header--hero
+  // allein, ohne --hero-capable, und rührt navToggle nie an.
   const isDesktopHeader = window.innerWidth >= 900;
-  let headerIsHero = isDesktopHeader;
-  if (header && isDesktopHeader) {
-    header.classList.add('site-header--hero', 'site-header--hero-capable');
-    mainNav?.setAttribute('inert', '');
-    gsap.set(brandText, { opacity: 0, x: -12 });
-    gsap.set(navToggle, { opacity: 1, pointerEvents: 'auto' });
-    gsap.set(navItems, { opacity: 0, x: 16 });
+  // Die Seite lädt immer im Hero, unabhängig vom Viewport.
+  let headerIsHero = true;
+  if (header) {
+    if (isDesktopHeader) {
+      header.classList.add('site-header--hero', 'site-header--hero-capable');
+      mainNav?.setAttribute('inert', '');
+      gsap.set(brandText, { opacity: 0, x: -12 });
+      gsap.set(navToggle, { opacity: 1, pointerEvents: 'auto' });
+      gsap.set(navItems, { opacity: 0, x: 16 });
+    } else {
+      header.classList.add('site-header--hero');
+      gsap.set(brandText, { opacity: 0, x: -12 });
+      // Explizit gesetzt, obwohl bereits CSS-Default - zusätzliche
+      // Absicherung, dass der Hamburger auf Mobile nie unsichtbar/
+      // unklickbar startet.
+      gsap.set(navToggle, { opacity: 1, pointerEvents: 'auto' });
+    }
   }
 
   initHeroMenuToggle(navToggle, heroMenu);
@@ -316,12 +344,16 @@ function initHeroPin(gsap, ScrollTrigger) {
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
+        // Beide Setter selbst-gegatet per Breite (s. o.) - pro Viewport
+        // läuft immer nur einer der beiden wirklich etwas aus.
         if (headerIsHero && self.direction === 1 && self.progress > HEADER_FLIP) {
           headerIsHero = false;
           setHeaderHero(false);
+          setHeaderCompactMobile(false);
         } else if (!headerIsHero && self.direction === -1 && self.progress < HEADER_FLIP) {
           headerIsHero = true;
           setHeaderHero(true);
+          setHeaderCompactMobile(true);
         }
       },
       // WICHTIG (gemessen, nicht offensichtlich): GSAP lässt beim Unpin

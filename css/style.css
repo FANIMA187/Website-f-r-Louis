@@ -428,6 +428,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .site-header--hero .brand__mark { width: 52px; height: 52px; }
 .site-header--hero .nav-toggle { color: var(--primary); }
+/* Icon-only-Logo: gilt auf allen Breiten (Mobile nutzt dieselbe Klasse,
+   gesteuert über setHeaderCompactMobile() in main.js). */
+.site-header--hero .brand__text { opacity: 0; }
 
 /* .site-header--hero-capable wird EINMALIG beim Setup gesetzt (main.js
    initHeroPin, nur Startseite) und nie wieder entfernt – der Hamburger bleibt
@@ -455,9 +458,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    wieder mit ein, damit der Hamburger optisch an derselben Stelle bleibt. */
 @media (min-width: 900px) {
   .site-header--hero .main-nav { pointer-events: none; }
-  /* Auf Mobile bleibt die Wortmarke immer sichtbar (kein Icon-Only-Logo-
-     Umbau dort, s. main.js initHeroPin) - Regel daher hier statt ungegrenzt. */
-  .site-header--hero .brand__text { opacity: 0; }
   .site-header--hero-capable .nav-toggle {
     position: absolute;
     top: 50%;
@@ -968,7 +968,10 @@ a.mega-tile:hover { border-color: var(--primary); }
    fast transparent). Das neue Mobile-Bild (startseite-hero-mobil.webp) ist
    zudem deutlich heller (Tageslicht statt Dämmerung). Eigener, stärkerer
    Verlauf nur für <900px, von oben nach unten statt von unten nach oben
-   gewichtet, mit echten Screenshots an 390×844/428×926 gegengeprüft (nicht
+   gewichtet. Erste Version (78/60/48%) war auf echten Geräten laut Kunde
+   kaum wahrnehmbar - hier bewusst deutlich kräftiger (92/88/78%) und über
+   die komplette Kicker+Subline-Zone (0-62%) nah beieinander gehalten statt
+   schnell abzufallen, mit echten Screenshots an 390×844 gegengeprüft (nicht
    geschätzt). Die horizontale Linksverdunkelung entfällt hier bewusst -
    auf Mobile ist der Text ohnehin blockweise volle Breite, nicht wie auf
    Desktop nur linksseitig neben dem Bild. Desktop-Regel oben unverändert. */
@@ -976,24 +979,30 @@ a.mega-tile:hover { border-color: var(--primary); }
   .hero__bg-overlay {
     background: linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--bg) 78%, transparent) 0%,
-      color-mix(in srgb, var(--bg) 60%, transparent) 26%,
-      color-mix(in srgb, var(--bg) 48%, transparent) 62%,
-      color-mix(in srgb, var(--bg) 25%, transparent) 82%,
-      color-mix(in srgb, var(--bg) 48%, transparent) 100%
+      color-mix(in srgb, var(--bg) 92%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 88%, transparent) 30%,
+      color-mix(in srgb, var(--bg) 78%, transparent) 62%,
+      color-mix(in srgb, var(--bg) 40%, transparent) 85%,
+      color-mix(in srgb, var(--bg) 55%, transparent) 100%
     );
   }
-  /* Zusätzliche, bildunabhängige Absicherung: dezenter zweilagiger
-     Schatten (enger Kontaktschatten + weicherer, größerer) aus --bg -
-     hält Kicker/Subline lesbar, auch falls der Bildausschnitt/-inhalt
-     sich später nochmal ändert. .kicker ist aktuell hero-exklusiv (kein
+  /* Zusätzliche, bildunabhängige Absicherung: zweilagiger Schatten (enger
+     Kontaktschatten + weicherer, größerer) aus --bg - hält Kicker/Subline
+     lesbar, auch falls der Bildausschnitt/-inhalt sich später nochmal
+     ändert. Deckkraft ggü. der ersten Version angehoben (85/70% -> 95/85%),
+     da "kaum sichtbar" war. .kicker ist aktuell hero-exklusiv (kein
      .section__kicker), trotzdem hier über .hero gescoped zur Sicherheit. */
   .hero .kicker,
   .hero__subline {
     text-shadow:
-      0 1px 2px color-mix(in srgb, var(--bg) 85%, transparent),
-      0 3px 14px color-mix(in srgb, var(--bg) 70%, transparent);
+      0 2px 4px color-mix(in srgb, var(--bg) 95%, transparent),
+      0 4px 18px color-mix(in srgb, var(--bg) 85%, transparent);
   }
+  /* Subline direkt mit angehoben statt erst abzuwarten, ob Overlay+Schatten
+     allein reichen - der vorsichtigere erste Versuch hat sich bereits als
+     zu schwach erwiesen. Bleibt in der Palette (White Smoke statt des
+     gedämpften Grautons). */
+  .hero__subline { color: var(--ink); }
 }
 
 .hero__inner {
