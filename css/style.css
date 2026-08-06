@@ -78,8 +78,13 @@
   --space-md:  1rem;
   --space-lg:  1.5rem;
   --space-xl:  2.5rem;
-  --space-2xl: 4rem;
-  --space-sec: clamp(4.5rem, 9vw, 8rem);
+  /* Mobile: kompakter (40px statt 64px) – ab 900px im Breakpoint-Block auf
+     4rem zurückgesetzt. Nicht im Hero verwendet, daher gefahrlos zentral. */
+  --space-2xl: 2.5rem;
+  /* Untergrenze bewusst niedriger als vorher (war 4.5rem/72px fix auf allen
+     Phones) – ab ca. 800px Breite übernimmt ohnehin die vw-Formel, Desktop
+     bleibt unverändert. Nicht im Hero verwendet, daher gefahrlos zentral. */
+  --space-sec: clamp(3rem, 9vw, 8rem);
 
   --radius:    6px;
   --radius-lg: 12px;
@@ -979,7 +984,10 @@ a.mega-tile:hover { border-color: var(--primary); }
 .page-hero {
   max-width: var(--maxw);
   margin-inline: auto;
-  padding: calc(72px + var(--space-2xl)) clamp(1rem, 4vw, 2rem) var(--space-xl);
+  /* Padding-bottom mobil kompakter (28px statt 40px) – --space-xl bleibt
+     Root-Token unverändert (Hero-Startseite), daher direkter Wert; ab 900px
+     zurückgesetzt. */
+  padding: calc(72px + var(--space-2xl)) clamp(1rem, 4vw, 2rem) 1.75rem;
 }
 /* Die erste Section nach dem Seitenkopf gehört inhaltlich noch zum Intro (z. B.
    "Was wir für Sie bewegen" → Hauptleistungen) – volles --space-sec obendrauf
@@ -1039,11 +1047,16 @@ a.mega-tile:hover { border-color: var(--primary); }
   border: 2px dashed var(--primary-dim);
   border-radius: var(--radius-lg);
   color: var(--ink-2);
-  padding: var(--space-xl);
+  /* Mobile: kompakter (24px statt 40px) – --space-xl bleibt Root-Token
+     unverändert (Hero), daher direkter Wert; ab 900px zurückgesetzt. */
+  padding: 1.5rem;
 }
 .photo-frame--hero { aspect-ratio: 4 / 3; }
 .photo-frame--portrait { aspect-ratio: 3 / 4; max-width: 340px; }
-.photo-frame__icon { width: 40px; height: 40px; color: var(--primary); stroke-width: 1.5; fill: none; stroke: currentColor; }
+.photo-frame__icon {
+  width: 32px; height: 32px; /* Mobile: kompakter statt 40px, ab 900px zurückgesetzt */
+  color: var(--primary); stroke-width: 1.5; fill: none; stroke: currentColor;
+}
 .photo-frame__label { display: grid; gap: 0.25rem; }
 .photo-frame__tag {
   font-family: var(--font-mono);
@@ -1076,7 +1089,7 @@ a.mega-tile:hover { border-color: var(--primary); }
 /* ------------------------------ Leistungen --------------------------- */
 .service-grid {
   display: grid;
-  gap: var(--space-md);
+  gap: 0.75rem; /* Mobile: kompakter (12px statt 16px), ab 900px auf --space-md */
   grid-template-columns: 1fr;
 }
 .service-card {
@@ -1084,7 +1097,10 @@ a.mega-tile:hover { border-color: var(--primary); }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--space-xl);
+  /* Mobile: kompakter (24px statt 40px) – --space-xl bleibt Root-Token
+     unverändert (wird auch vom Hero benutzt), daher hier direkter Wert
+     statt Token; ab 900px auf var(--space-xl) zurückgesetzt. */
+  padding: 1.5rem;
   overflow: hidden;
   transition: transform var(--dur) var(--ease),
               border-color var(--dur) var(--ease),
@@ -1114,8 +1130,11 @@ a.mega-tile:hover { border-color: var(--primary); }
   color: var(--primary);
 }
 .service-card__icon {
-  width: 40px; height: 40px;
-  margin: var(--space-lg) 0 var(--space-md);
+  /* Mobile: kompakter (32px statt 40px, Margin 20px/12px statt 24px/16px) –
+     --space-lg bleibt Root-Token unverändert (Hero), daher direkte Werte;
+     ab 900px auf Originalgröße zurückgesetzt. */
+  width: 32px; height: 32px;
+  margin: 1.25rem 0 0.75rem;
   color: var(--primary);
   fill: none; stroke: currentColor;
   stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
@@ -1194,13 +1213,16 @@ a.mega-tile:hover { border-color: var(--primary); }
 /* ------------------------------ Ablauf ------------------------------- */
 .process-grid {
   display: grid;
-  gap: var(--space-lg);
+  gap: 1.125rem; /* Mobile: kompakter (18px statt 24px), ab 900px auf --space-lg */
   grid-template-columns: 1fr;
   counter-reset: step;
 }
 .step {
   position: relative;
-  padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  /* Mobile: kompakter (28/20/20px statt 40/24/24px) – --space-xl/--space-lg
+     bleiben Root-Tokens unverändert (Hero), daher direkte Werte; ab 900px
+     auf Originalwerte zurückgesetzt. */
+  padding: 1.75rem 1.25rem 1.25rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -1208,22 +1230,22 @@ a.mega-tile:hover { border-color: var(--primary); }
 .step__num {
   position: absolute;
   top: calc(-1 * var(--space-md));
-  left: var(--space-lg);
-  width: 44px; height: 44px;
+  left: 1.25rem; /* Mobile: an neues .step-Padding angepasst, ab 900px auf --space-lg */
+  width: 36px; height: 36px; /* Mobile: kompakter statt 44px, ab 900px zurückgesetzt */
   display: grid; place-items: center;
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: 1.35rem;
+  font-size: 1.1rem; /* Mobile: kompakter statt 1.35rem, ab 900px zurückgesetzt */
   color: var(--bg);
   background: var(--primary);
   border-radius: var(--radius);
 }
 .step__icon {
-  width: 28px; height: 28px;
+  width: 24px; height: 24px; /* Mobile: kompakter statt 28px, ab 900px zurückgesetzt */
   color: var(--primary);
   fill: none; stroke: currentColor;
   stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
-  margin: var(--space-md) 0 var(--space-md);
+  margin: 0.75rem 0; /* Mobile: kompakter statt --space-md, ab 900px zurückgesetzt */
 }
 .step__title { font-size: var(--fs-h3); margin-bottom: var(--space-xs); }
 .step__text { color: var(--ink-2); margin: 0; font-size: var(--fs-body); }
@@ -1231,7 +1253,11 @@ a.mega-tile:hover { border-color: var(--primary); }
 /* ------------------------- Ablauf – interaktive Ansicht (nur ablauf.html) */
 .process-interactive { display: grid; gap: var(--space-lg); }
 
-.process-steps { display: grid; gap: var(--space-xl); align-content: start; }
+/* Mobile: kompakter (28px statt 40px) – --space-xl bleibt Root-Token
+   unverändert (Hero), daher direkter Wert; ab 900px zurückgesetzt.
+   .process-connector-Höhe unten muss exakt mitwachsen (überbrückt denselben
+   Abstand zwischen zwei .process-step). */
+.process-steps { display: grid; gap: 1.75rem; align-content: start; }
 
 .process-step {
   position: relative; /* Anker für .process-connector */
@@ -1291,7 +1317,7 @@ a.mega-tile:hover { border-color: var(--primary); }
   top: 100%;
   left: var(--space-lg);
   width: 40px;
-  height: var(--space-xl);
+  height: 1.75rem; /* Mobile: an .process-steps-gap angepasst, ab 900px zurückgesetzt */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1357,8 +1383,11 @@ a.mega-tile:hover { border-color: var(--primary); }
   align-items: center;
   justify-content: space-between;
   gap: var(--space-lg);
-  margin-top: var(--space-xl);
-  padding: var(--space-xl) var(--space-lg);
+  /* Mobile: kompakter (18px / 24px 20px statt 40px / 40px 24px) –
+     --space-xl bleibt Root-Token unverändert (Hero), daher direkte Werte;
+     ab 900px zurückgesetzt. */
+  margin-top: 1.125rem;
+  padding: 1.5rem 1.25rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -1476,7 +1505,9 @@ a.mega-tile:hover { border-color: var(--primary); }
   margin-inline: auto;
   padding: var(--space-2xl) clamp(1rem, 4vw, 2rem) var(--space-lg);
   display: grid;
-  gap: var(--space-xl);
+  /* Mobile: kompakter (28px statt 40px) – --space-xl bleibt Root-Token
+     unverändert (Hero), daher direkter Wert; ab 900px zurückgesetzt. */
+  gap: 1.75rem;
 }
 .footer__brand { display: flex; align-items: center; gap: 0.8rem; }
 .footer__brand .brand__mark { width: 44px; height: 44px; }
@@ -1522,7 +1553,7 @@ a.mega-tile:hover { border-color: var(--primary); }
   .nav-toggle { display: none; }
   .mobile-menu { display: none !important; }
 
-  .service-grid { grid-template-columns: repeat(3, 1fr); }
+  .service-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
   .feature-row { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
   .feature-row--reverse .feature-row__media { order: 2; }
   .feature-row--reverse .feature-row__body { order: 1; }
@@ -1535,6 +1566,29 @@ a.mega-tile:hover { border-color: var(--primary); }
   .contact__grid { grid-template-columns: 0.9fr 1.1fr; }
 
   .footer__brand { grid-column: 1; }
+
+  /* -------- Mobile-Kompaktierung zurücksetzen (ab hier wieder Desktop-Maß) -
+     Die Basis-Regeln oben (service-card, step, photo-frame, footer, page-hero,
+     process-interactive) tragen ab 900px wieder die ursprünglichen, groß-
+     zügigeren Werte statt der für Mobile verkleinerten Direktwerte. */
+  :root { --space-2xl: 4rem; }
+
+  .service-card { padding: var(--space-xl); }
+  .service-card__icon { width: 40px; height: 40px; margin: var(--space-lg) 0 var(--space-md); }
+
+  .step { padding: var(--space-xl) var(--space-lg) var(--space-lg); }
+  .step__num { left: var(--space-lg); width: 44px; height: 44px; font-size: 1.35rem; }
+  .step__icon { width: 28px; height: 28px; margin: var(--space-md) 0; }
+
+  .photo-frame { padding: var(--space-xl); }
+  .photo-frame__icon { width: 40px; height: 40px; }
+
+  .site-footer__inner { gap: var(--space-xl); }
+  .page-hero { padding-bottom: var(--space-xl); }
+
+  .process-steps { gap: var(--space-xl); }
+  .process-connector { height: var(--space-xl); }
+  .process-cta { margin-top: var(--space-xl); padding: var(--space-xl) var(--space-lg); }
 }
 
 @media (min-width: 1100px) {
