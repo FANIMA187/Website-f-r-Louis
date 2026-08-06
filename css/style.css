@@ -421,7 +421,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
           backdrop-filter: none;
   border-bottom-color: transparent;
 }
-.site-header--hero .brand__text { opacity: 0; }
 .site-header--hero .brand__mark,
 .site-header--hero .nav-toggle {
   background: none;
@@ -456,6 +455,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    wieder mit ein, damit der Hamburger optisch an derselben Stelle bleibt. */
 @media (min-width: 900px) {
   .site-header--hero .main-nav { pointer-events: none; }
+  /* Auf Mobile bleibt die Wortmarke immer sichtbar (kein Icon-Only-Logo-
+     Umbau dort, s. main.js initHeroPin) - Regel daher hier statt ungegrenzt. */
+  .site-header--hero .brand__text { opacity: 0; }
   .site-header--hero-capable .nav-toggle {
     position: absolute;
     top: 50%;
@@ -924,12 +926,17 @@ a.mega-tile:hover { border-color: var(--primary); }
    verschiedener X-Werte an 390×844/428×926 abgestimmt); der bisherige,
    vom Kunden bestätigte 55%-Wert bleibt ab 900px (Tablet/Desktop, wo
    durch das breitere Seitenverhältnis kaum noch beschnitten wird)
-   unverändert. */
+   unverändert.
+   Update: Mobile nutzt inzwischen ein eigenes, dafür geschossenes
+   Hochformat-Bild (startseite-hero-mobil.webp, 1200×1593) statt eines
+   Ausschnitts des Desktop-Bilds (siehe <picture> in index.html) - der
+   50%-Wert wurde dafür per Screenshot-Vergleich neu bestätigt (X bleibt
+   der einzig wirksame Wert, aus demselben rechnerischen Grund wie oben). */
 .hero__bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 55%;
+  object-position: 50% 50%;
   display: block;
 }
 @media (min-width: 900px) {

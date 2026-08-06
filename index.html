@@ -23,8 +23,11 @@
 
   <!-- Display-Font vorab laden (Hero-Headline & Wortmarke) -->
   <link rel="preload" href="assets/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin>
-  <!-- Hero-Hintergrundbild vorab laden (LCP) -->
-  <link rel="preload" href="assets/images/webp/startseite-hero.webp" as="image" fetchpriority="high">
+  <!-- Hero-Hintergrundbild vorab laden (LCP) - je ein Preload pro Breakpoint,
+       media exakt komplementär zur <source> in .hero__bg-img, damit pro
+       Viewport nur die tatsächlich genutzte Datei geladen wird. -->
+  <link rel="preload" href="assets/images/webp/startseite-hero-mobil.webp" as="image" fetchpriority="high" media="(max-width: 899px)">
+  <link rel="preload" href="assets/images/webp/startseite-hero.webp" as="image" fetchpriority="high" media="(min-width: 900px)">
 
   <link rel="stylesheet" href="css/style.css">
 
@@ -329,13 +332,21 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__pin" data-hero-pin>
         <div class="hero__bg" data-hero-bg>
-          <img
-            class="hero__bg-img"
-            src="assets/images/webp/startseite-hero.webp"
-            alt="Mobilbagger verlädt Erdaushub auf einen Muldenkipper auf einer Baustelle in der Abenddämmerung"
-            width="2400" height="1350"
-            fetchpriority="high" decoding="async"
-          >
+          <!-- Eigenes Hochformat-Bild für Mobile (<900px) statt Ausschnitt des
+               Desktop-Bilds - andere Aufnahme, daher bewusst ein Alt-Text, der
+               auf beide Motive zutrifft (picture kennt nur einen Alt-Text). -->
+          <picture>
+            <source media="(max-width: 899px)"
+                    srcset="assets/images/webp/startseite-hero-mobil.webp"
+                    width="1200" height="1593">
+            <img
+              class="hero__bg-img"
+              src="assets/images/webp/startseite-hero.webp"
+              alt="Bagger im Einsatz beim Erdaushub auf einer Baustelle"
+              width="2400" height="1350"
+              fetchpriority="high" decoding="async"
+            >
+          </picture>
           <div class="hero__bg-overlay" aria-hidden="true"></div>
         </div>
 

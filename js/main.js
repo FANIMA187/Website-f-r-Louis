@@ -245,7 +245,15 @@ function initHeroPin(gsap, ScrollTrigger) {
   // nicht nur relativ – dadurch bleibt bei schnellem Richtungswechsel nichts
   // in einem inkonsistenten Zwischenzustand hängen.
   const setHeaderHero = (active) => {
-    if (!header) return;
+    // Der komplette Hero-Header-Umbau (Icon-Only-Logo, Hamburger-Fade,
+    // Ausblenden von .main-nav) ist ein reiner Desktop-Mechanismus - auf
+    // Mobile gibt es weder .main-nav noch .hero-menu, dort ist der Hamburger
+    // die einzige Menü-Öffnung und muss immer sichtbar+klickbar bleiben.
+    // Ohne diesen Guard setzt der else-Zweig unten navToggle per Inline-Style
+    // dauerhaft auf opacity:0/pointer-events:none, sobald man den Hero-
+    // Bereich verlässt - auf Mobile kommt danach nie wieder active:true, der
+    // Hamburger bliebe für den Rest des Seitenbesuchs unerreichbar.
+    if (!header || window.innerWidth < 900) return;
     header.classList.toggle('site-header--hero', active);
     if (active) {
       mainNav?.setAttribute('inert', '');
@@ -281,8 +289,11 @@ function initHeroPin(gsap, ScrollTrigger) {
   // ausgeführt wird) - macht den Hamburger auf Desktop layout-technisch
   // dauerhaft verfügbar, ohne dass CSS "display" zwischen den Header-
   // Zuständen wechseln muss (siehe style.css).
-  let headerIsHero = true;
-  if (header) {
+  // Nur ab 900px (Desktop) - auf Mobile bleibt der Header im normalen
+  // Grundzustand (Hamburger regulär sichtbar+klickbar, s. setHeaderHero oben).
+  const isDesktopHeader = window.innerWidth >= 900;
+  let headerIsHero = isDesktopHeader;
+  if (header && isDesktopHeader) {
     header.classList.add('site-header--hero', 'site-header--hero-capable');
     mainNav?.setAttribute('inert', '');
     gsap.set(brandText, { opacity: 0, x: -12 });
