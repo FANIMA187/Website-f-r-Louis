@@ -290,6 +290,25 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    dazwischen kommt einheitlich von hier statt von drei einzelnen Section-Paddings. */
 .trust > * + * { margin-top: var(--space-2xl); }
 
+/* ueber-uns.html: Ansprechpartner → Warum Molitor sollen optisch näher zusammen-
+   rücken (kein .tread-Trenner wie auf der Startseite). Ohne diese Regel stapeln
+   sich zwei volle --space-sec-Paddings (bis 16rem Gesamtabstand) – dasselbe
+   Bruch-Muster wie oben beim Warum/Ablauf-Übergang. .about/.why sind eigene
+   Klassen, die nur auf dieser Seite vorkommen – betrifft keine anderen Sections.
+   Gekettet als .section.about/.section.why (2 Klassen), weil die generische
+   .section-Regel (padding-Shorthand, weiter unten im Stylesheet) bei gleicher
+   Spezifität sonst gewinnen und diese Überschreibung stumm wieder aufheben würde. */
+.section.about { padding-bottom: var(--space-lg); }
+.section.why { padding-top: var(--space-lg); }
+/* Das Foto ist als Hochformat deutlich höher als der kurze Fließtext daneben -
+   bei align-items:start (Basisregel .about__grid) bleibt darunter viel Leerraum
+   stehen, der den Abstand zu "Warum Molitor" zusätzlich künstlich vergrößert.
+   Zentriert die Spalten zueinander statt sie oben zu verankern - halbiert diesen
+   Leerraum spürbar (Rest wandert symmetrisch nach oben). Bewusst scoped auf
+   .about (nur ueber-uns.html), damit .about__grid--intro auf der Startseite
+   (dort ähnlich hohe Spalten, oben bündig gewollt) unangetastet bleibt. */
+.about .about__grid { align-items: center; }
+
 /* ------------------------------ Header ------------------------------- */
 .site-header {
   position: fixed;
@@ -726,58 +745,38 @@ html:not(.js-nav) .main-nav__item--mega:focus-within > .mega,
 }
 .mega-aside__all:hover { color: var(--primary-hi); }
 
-/* Über-uns: Foto-Feature – ganze Kachel als klickbare Foto-Fläche
-   (Platzhalter bis Louis' echtes Foto vorliegt; .mega-feature__bg ist die
-   Stelle für den späteren Foto-Tausch). */
+/* Über-uns: schlichte, große Klick-Box (kein Foto-Bezug mehr) - Icon + "Ihr
+   Ansprechpartner" als Hauptaussage, "Louis Molitor" als kleine Unterzeile.
+   Solide Karte statt Platzhalter-Look, angelehnt an .mega-tile, aber in der
+   bisherigen Größe/Position (min-height, align-items:stretch neben .mega-tiles). */
 .mega-feature {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-sm);
+  text-align: center;
   min-height: 240px;
-  overflow: hidden;
-  border: 2px dashed var(--primary-dim);
+  padding: var(--space-lg);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  transition: border-color var(--dur) var(--ease);
+  background: var(--surface-2);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
-.mega-feature:hover { border-color: var(--primary); }
-
-.mega-feature__bg {
-  position: absolute; inset: 0; z-index: 0;
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  background: repeating-linear-gradient(45deg, var(--surface-2) 0 12px, var(--surface) 12px 24px);
-}
+.mega-feature:hover { border-color: var(--primary); transform: translateY(-2px); }
 .mega-feature__icon {
-  width: 22px; height: 22px; color: var(--primary);
+  width: 40px; height: 40px;
+  color: var(--primary);
   fill: none; stroke: currentColor; stroke-width: 1.5;
   stroke-linecap: round; stroke-linejoin: round;
 }
-.mega-feature__tag {
-  font-family: var(--font-mono); font-size: 0.7rem;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--primary);
-}
-
-/* Scrim: dunkelt nach unten ab, damit Name/Rolle über jedem künftigen Foto lesbar bleiben */
-.mega-feature::after {
-  content: "";
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(
-    to top,
-    color-mix(in srgb, var(--bg) 90%, transparent) 0%,
-    color-mix(in srgb, var(--bg) 55%, transparent) 42%,
-    transparent 72%
-  );
-}
-
-.mega-feature__body {
-  position: relative; z-index: 2;
-  display: grid; gap: 0.15rem;
-  padding: var(--space-md) var(--space-lg);
-}
 .mega-feature__name {
   font-family: var(--font-display); font-weight: 800;
-  text-transform: uppercase; color: var(--ink); font-size: 1.05rem;
+  text-transform: uppercase; color: var(--ink); font-size: 1.15rem;
 }
-.mega-feature__role { font-size: var(--fs-small); color: var(--ink-2); }
+.mega-feature__role {
+  font-family: var(--font-mono); font-size: var(--fs-small);
+  color: var(--ink-2); letter-spacing: 0.03em;
+}
 
 /* grid-auto-rows: 1fr -> alle <li> gleich hoch; height: 100% zieht die sichtbare Kachel
    selbst auf diese Höhe (ohne das blieben "Socials"/"Rechtliches" trotz gleich hoher
@@ -944,8 +943,8 @@ a.mega-tile:hover { border-color: var(--primary); }
 }
 /* Scrim: dunkelt von unten UND von der Textseite (links) ab, damit der
    Hero-Text auf Mobile (Blöcke untereinander) wie auf Desktop (Text linksbündig
-   über breitem Bild) gleichermaßen lesbar bleibt. Gleiches Muster wie
-   .mega-feature::after, nur zweiseitig kombiniert. */
+   über breitem Bild) gleichermaßen lesbar bleibt. Gleiches Verlaufs-Prinzip wie
+   an anderen Scrim-Stellen im Stylesheet, hier nur zweiseitig kombiniert. */
 .hero__bg-overlay {
   position: absolute; inset: 0; z-index: 1;
   background:
@@ -1102,7 +1101,32 @@ a.mega-tile:hover { border-color: var(--primary); }
   padding: 1.5rem;
 }
 .photo-frame--hero { aspect-ratio: 4 / 3; }
-.photo-frame--portrait { aspect-ratio: 3 / 4; max-width: 340px; }
+/* --portrait zeigt (im Gegensatz zu --hero/--panel) ein echtes Foto statt eines
+   Platzhalter-Icons: padding: 0 + overflow: hidden lassen das Bild die Fläche
+   randlos füllen, statt es wie beim Platzhalter mittig mit Luft drumherum zu
+   zentrieren; solid statt dashed, weil der gestrichelte Rahmen das visuelle
+   Signal „Platzhalter, hier kommt noch was" ist – bei einem echten Foto wäre
+   das irreführend. width: 100% (statt nur max-width) ist hier wichtig: als
+   nicht gestrecktes Grid-Item (.about__media { justify-items: center }) löst
+   der Browser ohne definite Breite die Größe der Figure sonst instabil auf
+   (zusammen mit aspect-ratio + einem 100%-Bild, das selbst von der Figure
+   abhängt) - das machte das Foto kleiner als nötig und ließ .about__name
+   darunter zu wenig verlässlichen Raum. */
+.photo-frame--portrait {
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  overflow: hidden;
+  border-style: solid;
+  border-color: var(--border);
+}
+.photo-frame--portrait .photo-frame__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .photo-frame__icon {
   width: 32px; height: 32px; /* Mobile: kompakter statt 40px, ab 900px zurückgesetzt */
   color: var(--primary); stroke-width: 1.5; fill: none; stroke: currentColor;
@@ -1142,8 +1166,15 @@ a.mega-tile:hover { border-color: var(--primary); }
   gap: 0.75rem; /* Mobile: kompakter (12px statt 16px), ab 900px auf --space-md */
   grid-template-columns: 1fr;
 }
+/* Grid-Item-Wrapper (nur Startseite): .service-card sitzt hier auf einem <a>
+   (ganze Karte klickbar) statt direkt auf dem <li> - display:flex streckt
+   den Link dank Flex-Stretch (Default align-items:stretch) auf die volle,
+   von CSS-Grid bereits auf Zeilenhöhe gebrachte Zellenfläche, damit wirklich
+   die ganze Karte klickbar ist, nicht nur ihre Inhaltshöhe. */
+.service-grid__item { display: flex; }
 .service-card {
   position: relative;
+  display: block; /* nötig, da .service-card jetzt auf einem <a> sitzt (Default: inline) */
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -1152,6 +1183,8 @@ a.mega-tile:hover { border-color: var(--primary); }
      statt Token; ab 900px auf var(--space-xl) zurückgesetzt. */
   padding: 1.5rem;
   overflow: hidden;
+  text-decoration: none; /* Link-Browserdefault (Unterstreichung) überschreiben */
+  color: inherit; /* Link-Browserdefault (Link-Blau) überschreiben */
   transition: transform var(--dur) var(--ease),
               border-color var(--dur) var(--ease),
               background-color var(--dur) var(--ease);
@@ -1225,9 +1258,28 @@ a.mega-tile:hover { border-color: var(--primary); }
 }
 .service-card--secondary:hover { transform: none; border-color: var(--primary); background: var(--surface-2); }
 
+/* Kompakte Variante für die Startseite: bewusst NICHT --secondary (die ist
+   für Mini-Chips auf leistungen.html gedacht und dafür zu reduziert) -
+   liegt zwischen Vollformat und --secondary. Selektoren bewusst gekettet
+   (.service-card.service-card--compact statt nur .service-card--compact),
+   damit sie zuverlässig gegen den @media(min-width:900px)-Reset von
+   .service-card (Padding/Icon wieder auf Vollformat) gewinnen - bei
+   gleicher Spezifität würde sonst der spätere Media-Query-Block gewinnen. */
+.service-card.service-card--compact { padding: var(--space-lg); }
+.service-card--compact .service-card__icon {
+  width: 28px; height: 28px;
+  margin: var(--space-md) 0 var(--space-sm);
+}
+.service-card--compact .service-card__title { font-size: 1.05rem; margin-bottom: 0.3rem; }
+.service-card--compact .service-card__text {
+  font-size: var(--fs-small);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
 /* ------------------------------ Über uns ----------------------------- */
 .about__grid { display: grid; gap: var(--space-2xl); align-items: start; }
 .about__media { display: grid; gap: var(--space-md); justify-items: center; }
+.about__body { max-width: 65ch; }
 .about__name {
   font-family: var(--font-mono);
   font-size: var(--fs-small);
@@ -1608,10 +1660,23 @@ a.mega-tile:hover { border-color: var(--primary); }
   .feature-row--reverse .feature-row__media { order: 2; }
   .feature-row--reverse .feature-row__body { order: 1; }
   .why-grid { grid-template-columns: repeat(4, 1fr); }
+  /* .about__aside bettet why-grid jetzt (nur auf der Startseite) in die schmalere
+     rechte Spalte von .about__grid--intro ein - 4 Spalten wären dort viel zu eng,
+     bleibt bei 2×2. Höhere Spezifität (2 Klassen) gewinnt zuverlässig gegen die
+     obige Basis-Regel, unabhängig von der Reihenfolge im Stylesheet. */
+  .about__aside .why-grid { grid-template-columns: repeat(2, 1fr); }
   .process-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
   .process-interactive { grid-template-columns: 0.85fr 1.15fr; align-items: start; gap: var(--space-2xl); }
 
+  /* Basis: ueber-uns.html (Foto schmaler als Text). Startseite nutzt denselben
+     .about__grid-Wrapper für Text+Warum-Molitor statt Foto+Text und braucht
+     dafür ein anderes Verhältnis - dafür der eigene .about__grid--intro-Modifier
+     direkt danach (2 Klassen = höhere Spezifität, überschreibt zuverlässig,
+     unabhängig von der Reihenfolge; keine ID-Selektoren fürs Styling laut
+     CLAUDE.md). */
   .about__grid { grid-template-columns: 0.8fr 1.2fr; gap: var(--space-2xl); }
+  .about__grid.about__grid--intro { grid-template-columns: 1fr 1fr; }
+
   .area__grid { grid-template-columns: 1.1fr 0.9fr; }
   .contact__grid { grid-template-columns: 0.9fr 1.1fr; }
 

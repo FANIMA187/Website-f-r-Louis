@@ -87,6 +87,7 @@
       <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5 11-11"/></symbol>
       <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
       <symbol id="i-handshake" viewBox="0 0 24 24"><path d="M12 8l-2-1.5a2 2 0 0 0-2.3 0L3 9.5V16l3 2"/><path d="M12 8l2-1.5a2 2 0 0 1 2.3 0L21 9.5V16l-3 2"/><path d="M8 13l2.5 2.2a1.6 1.6 0 0 0 2.2 0L18 11"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
       <!-- Ablauf / Kontakt -->
       <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
       <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M8.5 11h7M8.5 15h5"/></symbol>
@@ -94,7 +95,6 @@
       <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3h3l2 5-2.5 1.5a12 12 0 0 0 5 5L14 14l5 2v3a2 2 0 0 1-2 2A15 15 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
       <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M4 20l1.4-4A8 8 0 1 1 9 19.5z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5.6 0 1-.4 1-1v-.8l-1.8-.8-.9.9a4.2 4.2 0 0 1-2-2l.9-.9L10 8.5H9.2c-.1 0-.2.5-.2 1z"/></symbol>
       <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></symbol>
-      <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></symbol>
       <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></symbol>
       <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
       <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
@@ -175,14 +175,9 @@
             <div class="mega" id="mega-ueber" data-nav-panel>
               <div class="mega__inner mega__inner--about">
                 <a class="mega-feature" href="ueber-uns.html">
-                  <span class="mega-feature__bg" aria-hidden="true">
-                    <svg class="mega-feature__icon"><use href="#i-camera"></use></svg>
-                    <span class="mega-feature__tag">Foto folgt</span>
-                  </span>
-                  <span class="mega-feature__body">
-                    <span class="mega-feature__name">Louis Molitor</span>
-                    <span class="mega-feature__role">Ihr Ansprechpartner – ein Betrieb, ein Kontakt</span>
-                  </span>
+                  <svg class="mega-feature__icon" aria-hidden="true"><use href="#i-user"></use></svg>
+                  <span class="mega-feature__name">Ihr Ansprechpartner</span>
+                  <span class="mega-feature__role">Louis Molitor</span>
                 </a>
                 <ul class="mega-tiles">
                   <li>
@@ -395,41 +390,53 @@
         </p>
       </div>
       <ul class="service-grid">
-        <li class="service-card" id="leistung-tiefbau" data-reveal>
-          <span class="service-card__code">001</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-layers"></use></svg>
-          <h3 class="service-card__title">Tiefbau</h3>
-          <p class="service-card__text">Fachgerechte Tiefbauarbeiten als solide Basis für alles, was darauf entsteht.</p>
+        <li class="service-grid__item">
+          <a class="service-card service-card--compact" id="leistung-tiefbau" href="leistungen.html#leistung-tiefbau" data-reveal>
+            <span class="service-card__code" aria-hidden="true">001</span>
+            <svg class="service-card__icon" aria-hidden="true"><use href="#i-layers"></use></svg>
+            <h3 class="service-card__title">Tiefbau</h3>
+            <p class="service-card__text">Fachgerechte Tiefbauarbeiten als solide Basis für alles, was darauf entsteht.</p>
+          </a>
         </li>
-        <li class="service-card" id="leistung-erdarbeiten" data-reveal>
-          <span class="service-card__code">002</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-shovel"></use></svg>
-          <h3 class="service-card__title">Erdarbeiten &amp; Aushub</h3>
-          <p class="service-card__text">Ausschachten von Flächen für Fundamente, Pool und Hausbau – präzise vorbereitet, damit Ihr Projekt auf festem Grund steht.</p>
+        <li class="service-grid__item">
+          <a class="service-card service-card--compact" id="leistung-erdarbeiten" href="leistungen.html#leistung-erdarbeiten" data-reveal>
+            <span class="service-card__code" aria-hidden="true">002</span>
+            <svg class="service-card__icon" aria-hidden="true"><use href="#i-shovel"></use></svg>
+            <h3 class="service-card__title">Erdarbeiten &amp; Aushub</h3>
+            <p class="service-card__text">Ausschachten von Flächen für Fundamente, Pool und Hausbau – präzise vorbereitet, damit Ihr Projekt auf festem Grund steht.</p>
+          </a>
         </li>
-        <li class="service-card" id="leistung-pflaster" data-reveal>
-          <span class="service-card__code">003</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-paving"></use></svg>
-          <h3 class="service-card__title">Pflasterarbeiten</h3>
-          <p class="service-card__text">Wege, Einfahrten und Flächen, sauber verlegt und gemacht, um zu halten.</p>
+        <li class="service-grid__item">
+          <a class="service-card service-card--compact" id="leistung-pflaster" href="leistungen.html#leistung-pflaster" data-reveal>
+            <span class="service-card__code" aria-hidden="true">003</span>
+            <svg class="service-card__icon" aria-hidden="true"><use href="#i-paving"></use></svg>
+            <h3 class="service-card__title">Pflasterarbeiten</h3>
+            <p class="service-card__text">Wege, Einfahrten und Flächen, sauber verlegt und gemacht, um zu halten.</p>
+          </a>
         </li>
-        <li class="service-card" id="leistung-baggerarbeiten" data-reveal>
-          <span class="service-card__code">004</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-excavator"></use></svg>
-          <h3 class="service-card__title">Baggerarbeiten</h3>
-          <p class="service-card__text">Effiziente Baggerarbeiten für Grundstück, Gelände und Baustelle – mit dem richtigen Gerät für den Job.</p>
+        <li class="service-grid__item">
+          <a class="service-card service-card--compact" id="leistung-baggerarbeiten" href="leistungen.html#leistung-baggerarbeiten" data-reveal>
+            <span class="service-card__code" aria-hidden="true">004</span>
+            <svg class="service-card__icon" aria-hidden="true"><use href="#i-excavator"></use></svg>
+            <h3 class="service-card__title">Baggerarbeiten</h3>
+            <p class="service-card__text">Effiziente Baggerarbeiten für Grundstück, Gelände und Baustelle – mit dem richtigen Gerät für den Job.</p>
+          </a>
         </li>
-        <li class="service-card" id="leistung-bodenplatten" data-reveal>
-          <span class="service-card__code">005</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-slab"></use></svg>
-          <h3 class="service-card__title">Bodenplatten</h3>
-          <p class="service-card__text">Vorbereitung und Erstellung von Bodenplatten – die tragfähige Grundlage für Ihren Bau.</p>
+        <li class="service-grid__item">
+          <a class="service-card service-card--compact" id="leistung-bodenplatten" href="leistungen.html#leistung-bodenplatten" data-reveal>
+            <span class="service-card__code" aria-hidden="true">005</span>
+            <svg class="service-card__icon" aria-hidden="true"><use href="#i-slab"></use></svg>
+            <h3 class="service-card__title">Bodenplatten</h3>
+            <p class="service-card__text">Vorbereitung und Erstellung von Bodenplatten – die tragfähige Grundlage für Ihren Bau.</p>
+          </a>
         </li>
-        <li class="service-card" id="leistung-abbruch" data-reveal>
-          <span class="service-card__code">006</span>
-          <svg class="service-card__icon" aria-hidden="true"><use href="#i-hammer"></use></svg>
-          <h3 class="service-card__title">Abbruch &amp; Wegebau</h3>
-          <p class="service-card__text">Abbrucharbeiten und Wegebau, damit Platz und Zugang entstehen, wo gebaut wird.</p>
+        <li class="service-grid__item">
+          <a class="service-card service-card--compact" id="leistung-abbruch" href="leistungen.html#leistung-abbruch" data-reveal>
+            <span class="service-card__code" aria-hidden="true">006</span>
+            <svg class="service-card__icon" aria-hidden="true"><use href="#i-hammer"></use></svg>
+            <h3 class="service-card__title">Abbruch &amp; Wegebau</h3>
+            <p class="service-card__text">Abbrucharbeiten und Wegebau, damit Platz und Zugang entstehen, wo gebaut wird.</p>
+          </a>
         </li>
       </ul>
     </section>
@@ -437,25 +444,17 @@
     <div class="tread" aria-hidden="true"></div>
 
     <!-- ============= ANSPRECHPARTNER / WARUM MOLITOR / EINSATZGEBIET ============= -->
-    <!-- Zu einem zusammenhängenden Bereich verschmolzen (drei genestete <section>,
-         gemeinsames Section-Padding nur außen, Abstand dazwischen über .trust > * + *) -->
+    <!-- Zu einem zusammenhängenden Bereich verschmolzen (zwei genestete <section>,
+         gemeinsames Section-Padding nur außen, Abstand dazwischen über .trust > * + *).
+         Ansprechpartner und Warum Molitor sitzen zusätzlich zusammen in EINER Section
+         (.about__grid--intro, ab 900px zweispaltig: Text links, Warum-Molitor rechts) -
+         spart Scroll-Höhe, da die Ansprechpartner-Spalte ohne Foto sonst leer wirkt. -->
     <section class="section trust">
-      <section class="about__grid" id="ueber-uns" aria-labelledby="about-title">
-        <div class="about__media" data-reveal>
-          <!-- Porträt-Platzhalter: kein Stock-Gesicht, bis eigenes Foto vorliegt -->
-          <figure class="photo-frame photo-frame--portrait">
-            <svg class="photo-frame__icon" aria-hidden="true"><use href="#i-camera"></use></svg>
-            <figcaption class="photo-frame__label">
-              <span class="photo-frame__tag">Foto folgt</span>
-              <span class="photo-frame__hint">Porträt Louis Molitor</span>
-            </figcaption>
-          </figure>
-          <p class="about__name"><strong>Louis Molitor</strong> · Inhaber</p>
-        </div>
-
+      <section class="about__grid about__grid--intro" id="ueber-uns" aria-labelledby="about-title">
         <div class="about__body">
           <p class="section__kicker" data-reveal>Ihr Ansprechpartner</p>
           <h2 class="section__title" id="about-title" data-reveal>Ein Betrieb, ein Ansprechpartner</h2>
+          <p class="about__name" data-reveal><strong>Louis Molitor</strong> · Inhaber</p>
           <p data-reveal>
             L. Molitor Erd- &amp; Tiefbau ist ein junger Einzelbetrieb – gegründet aus dem
             Wunsch, ehrliche Handarbeit mit der eigenen Maschine zu leisten und etwas
@@ -472,36 +471,36 @@
             und der Anspruch, jeden Auftrag so abzuliefern, dass Sie uns weiterempfehlen.
           </p>
         </div>
-      </section>
 
-      <section id="warum" aria-labelledby="why-title">
-        <div class="section__head">
-          <p class="section__kicker" data-reveal>Warum Molitor</p>
-          <h2 class="section__title" id="why-title" data-reveal>Worauf Sie sich verlassen können</h2>
+        <div class="about__aside" id="warum" aria-labelledby="why-title">
+          <div class="section__head section__head--compact">
+            <p class="section__kicker" data-reveal>Warum Molitor</p>
+            <h2 class="section__title" id="why-title" data-reveal>Worauf Sie sich verlassen können</h2>
+          </div>
+
+          <ul class="why-grid">
+            <li class="why-item" data-reveal>
+              <svg class="why-item__icon" aria-hidden="true"><use href="#i-hardhat"></use></svg>
+              <h3 class="why-item__title">Persönlich vom Chef</h3>
+              <p class="why-item__text">Ihr Ansprechpartner ist der, der auch den Bagger fährt.</p>
+            </li>
+            <li class="why-item" data-reveal>
+              <svg class="why-item__icon" aria-hidden="true"><use href="#i-check"></use></svg>
+              <h3 class="why-item__title">Sauber &amp; zuverlässig</h3>
+              <p class="why-item__text">Termine, die halten. Arbeit, die passt. Baustellen, die aufgeräumt bleiben.</p>
+            </li>
+            <li class="why-item" data-reveal>
+              <svg class="why-item__icon" aria-hidden="true"><use href="#i-pin"></use></svg>
+              <h3 class="why-item__title">Regional verwurzelt</h3>
+              <p class="why-item__text">Zuhause in der Region – im Umkreis von rund 60 km schnell bei Ihnen.</p>
+            </li>
+            <li class="why-item" data-reveal>
+              <svg class="why-item__icon" aria-hidden="true"><use href="#i-handshake"></use></svg>
+              <h3 class="why-item__title">Klare Absprachen</h3>
+              <p class="why-item__text">Ehrliche Einschätzung statt leerer Versprechen. Sie wissen immer, woran Sie sind.</p>
+            </li>
+          </ul>
         </div>
-
-        <ul class="why-grid">
-          <li class="why-item" data-reveal>
-            <svg class="why-item__icon" aria-hidden="true"><use href="#i-hardhat"></use></svg>
-            <h3 class="why-item__title">Persönlich vom Chef</h3>
-            <p class="why-item__text">Ihr Ansprechpartner ist der, der auch den Bagger fährt.</p>
-          </li>
-          <li class="why-item" data-reveal>
-            <svg class="why-item__icon" aria-hidden="true"><use href="#i-check"></use></svg>
-            <h3 class="why-item__title">Sauber &amp; zuverlässig</h3>
-            <p class="why-item__text">Termine, die halten. Arbeit, die passt. Baustellen, die aufgeräumt bleiben.</p>
-          </li>
-          <li class="why-item" data-reveal>
-            <svg class="why-item__icon" aria-hidden="true"><use href="#i-pin"></use></svg>
-            <h3 class="why-item__title">Regional verwurzelt</h3>
-            <p class="why-item__text">Zuhause in der Region – im Umkreis von rund 60 km schnell bei Ihnen.</p>
-          </li>
-          <li class="why-item" data-reveal>
-            <svg class="why-item__icon" aria-hidden="true"><use href="#i-handshake"></use></svg>
-            <h3 class="why-item__title">Klare Absprachen</h3>
-            <p class="why-item__text">Ehrliche Einschätzung statt leerer Versprechen. Sie wissen immer, woran Sie sind.</p>
-          </li>
-        </ul>
       </section>
 
       <section class="area__grid" id="einzugsgebiet" aria-labelledby="area-title">
