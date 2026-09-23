@@ -253,13 +253,13 @@
             <svg class="mobile-menu__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
           </button>
           <div class="mobile-menu__panel" id="acc-leistungen" data-acc-panel hidden>
+            <a class="mobile-menu__sub mobile-menu__sub--all" href="leistungen.html">Alle Leistungen ansehen</a>
             <a class="mobile-menu__sub" href="leistungen.html#leistung-tiefbau">Tiefbau</a>
             <a class="mobile-menu__sub" href="leistungen.html#leistung-erdarbeiten">Erdarbeiten &amp; Aushub</a>
             <a class="mobile-menu__sub" href="leistungen.html#leistung-pflaster">Pflasterarbeiten</a>
             <a class="mobile-menu__sub" href="leistungen.html#leistung-baggerarbeiten">Baggerarbeiten</a>
             <a class="mobile-menu__sub" href="leistungen.html#leistung-bodenplatten">Bodenplatten</a>
             <a class="mobile-menu__sub" href="leistungen.html#leistung-abbruch">Abbruch &amp; Wegebau</a>
-            <a class="mobile-menu__sub mobile-menu__sub--all" href="leistungen.html">Alle Leistungen ansehen</a>
           </div>
         </li>
 
@@ -269,12 +269,17 @@
             <svg class="mobile-menu__chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
           </button>
           <div class="mobile-menu__panel" id="acc-ueber" data-acc-panel hidden>
-            <a class="mobile-menu__sub" href="ueber-uns.html">Über uns – Übersicht</a>
+            <a class="mobile-menu__sub" href="ueber-uns.html">Ihr Ansprechpartner – Louis Molitor</a>
             <a class="mobile-menu__sub" href="ueber-uns.html#warum">Warum Molitor</a>
             <a class="mobile-menu__sub" href="mailto:[Adresse]">Kontakt per E-Mail <span class="ph">[Adresse]</span></a>
             <a class="mobile-menu__sub" href="#" aria-disabled="true">Instagram <span class="ph">[Link]</span></a>
-            <a class="mobile-menu__sub" href="#" aria-disabled="true">Impressum <span class="ph">[folgt]</span></a>
-            <a class="mobile-menu__sub" href="#" aria-disabled="true">Datenschutz <span class="ph">[folgt]</span></a>
+            <div class="mobile-menu__sub">
+              Rechtliches
+              <span class="mobile-menu__legal">
+                <a href="#" aria-disabled="true">Impressum <span class="ph">[folgt]</span></a>
+                <a href="#" aria-disabled="true">Datenschutz <span class="ph">[folgt]</span></a>
+              </span>
+            </div>
           </div>
         </li>
 
@@ -327,18 +332,21 @@
         </div>
 
         <div class="about__body">
-          <p data-reveal>
+          <!-- Neben dem hohen Foto zentriert, dadurch startet der Text je nach Viewport
+               unter der ScrollTrigger-Linie. data-reveal-trigger koppelt die Einblendung
+               an .about__grid, das beim Laden immer sichtbar ist (siehe main.js). -->
+          <p data-reveal data-reveal-trigger=".about__grid">
             L. Molitor Erd- &amp; Tiefbau ist ein junger Einzelbetrieb – gegründet aus dem
             Wunsch, ehrliche Handarbeit mit der eigenen Maschine zu leisten und etwas
             Eigenes aufzubauen.
           </p>
-          <p data-reveal>
+          <p data-reveal data-reveal-trigger=".about__grid">
             Der Vorteil für Sie: Sie sprechen direkt mit dem Mann, der die Arbeit macht.
             Kein Callcenter, keine Warteschleife, keine Missverständnisse über drei Ecken.
             Sie schildern Ihr Vorhaben, wir schauen es uns gemeinsam an, und Sie bekommen
             eine klare, ehrliche Einschätzung.
           </p>
-          <p data-reveal>
+          <p data-reveal data-reveal-trigger=".about__grid">
             Frisch gegründet heißt für uns vor allem eins: volle Motivation, saubere Arbeit
             und der Anspruch, jeden Auftrag so abzuliefern, dass Sie uns weiterempfehlen.
           </p>

@@ -134,20 +134,41 @@ async function initAnimations() {
     // [data-hero-reveal] (der #leistungen-Kopf) ist ebenfalls ausgenommen -
     // der ist Teil der Hero-Pin-Crossfade-Timeline (initHeroPin), nicht des
     // generischen Batches hier (der würde viel zu früh feuern, siehe dort).
-    const items = gsap.utils.toArray('[data-reveal]:not(.service-card):not([data-hero-reveal])');
-    gsap.set(items, { opacity: 0, y: 24 });
+    // Gemeinsame Werte für beide Reveal-Wege unten - so können Dauer, Easing und
+    // Staffel nicht auseinanderlaufen.
+    const revealStagger = 0.08;
+    const revealFrom = { opacity: 0, y: 24 };
+    const revealTo = { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', stagger: revealStagger };
+
+    // [data-reveal-trigger="<selector>"] ist für Inhalt, der beim Laden unter dem
+    // Fold beginnt, obwohl sein Abschnitt längst sichtbar ist - der eigene Trigger
+    // des Elements würde erst beim Scrollen feuern, obwohl daneben schon alles steht
+    // (ueber-uns.html: Fließtext, der neben dem hohen Foto zentriert sitzt).
+    // Ausgelöst wird stattdessen vom genannten Container.
+    const items = gsap.utils.toArray(
+      '[data-reveal]:not(.service-card):not([data-hero-reveal]):not([data-reveal-trigger])'
+    );
+    const tied = gsap.utils.toArray('[data-reveal-trigger]');
+    gsap.set([...items, ...tied], revealFrom);
 
     ScrollTrigger.batch(items, {
       start: 'top 88%',
       once: true,
-      onEnter: (batch) => gsap.to(batch, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'power2.out',
-        stagger: 0.08,
-      }),
+      onEnter: (batch) => gsap.to(batch, revealTo),
     });
+
+    if (tied.length) {
+      // Alle Elemente teilen sich denselben Container - eine zweite Gruppe auf
+      // einer Seite bräuchte eine Gruppierung nach Attributwert.
+      ScrollTrigger.create({
+        trigger: tied[0].dataset.revealTrigger,
+        start: 'top 88%',
+        once: true,
+        // Kicker, H1, Intro und Foto laufen im Batch davor: mit dem Versatz setzt
+        // der Text deren Staffel fort, statt parallel zum Kicker zu starten.
+        onEnter: () => gsap.to(tied, { ...revealTo, delay: 4 * revealStagger }),
+      });
+    }
 
     initHeroPin(gsap, ScrollTrigger);
 
@@ -507,13 +528,25 @@ function initNavDropdowns() {
 
 /* ------------------------------ Mobile-Akkordeons ------------------- */
 function initMobileAccordions() {
-  document.querySelectorAll('[data-acc-trigger]').forEach((trigger) => {
-    const panel = document.getElementById(trigger.getAttribute('aria-controls'));
-    if (!panel) return;
-    trigger.addEventListener('click', () => {
-      const open = trigger.getAttribute('aria-expanded') === 'true';
-      trigger.setAttribute('aria-expanded', String(!open));
-      panel.hidden = open;
+  const menu = document.querySelector('[data-mobile-menu]');
+  if (!menu) return;
+  const items = Array.from(menu.querySelectorAll('[data-acc-trigger]'))
+    .map((trigger) => ({ trigger, panel: document.getElementById(trigger.getAttribute('aria-controls')) }))
+    .filter((item) => item.panel);
+
+  // aria-expanded dreht per CSS auch den Chevron - ein eigener Klassenzustand
+  // ist dafür nicht nötig.
+  const setOpen = (item, open) => {
+    item.trigger.setAttribute('aria-expanded', String(open));
+    item.panel.hidden = !open;
+  };
+
+  items.forEach((item) => {
+    item.trigger.addEventListener('click', () => {
+      const open = item.trigger.getAttribute('aria-expanded') === 'true';
+      // immer nur eins offen - andere sofort schließen (wie die Desktop-Dropdowns)
+      items.forEach((other) => { if (other !== item) setOpen(other, false); });
+      setOpen(item, !open);
     });
   });
 }

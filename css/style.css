@@ -300,12 +300,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    Spezifität sonst gewinnen und diese Überschreibung stumm wieder aufheben würde. */
 .section.about { padding-bottom: var(--space-lg); }
 .section.why { padding-top: var(--space-lg); }
-/* Das Foto ist als Hochformat deutlich höher als der kurze Fließtext daneben -
-   bei align-items:start (Basisregel .about__grid) bleibt darunter viel Leerraum
-   stehen, der den Abstand zu "Warum Molitor" zusätzlich künstlich vergrößert.
-   Zentriert die Spalten zueinander statt sie oben zu verankern - halbiert diesen
-   Leerraum spürbar (Rest wandert symmetrisch nach oben). Bewusst scoped auf
-   .about (nur ueber-uns.html), damit .about__grid--intro auf der Startseite
+/* Das Foto ist auch im 4:5-Format deutlich höher als der kurze Fließtext daneben
+   (536px zu 300px). Zentriert wirkt das Paar ausgewogen, statt dass der Text oben
+   klebt und darunter die halbe Spalte leer bleibt. Kostet 137px Versatz nach
+   unten - der Fließtext rutscht dadurch unter die ScrollTrigger-Linie, deshalb
+   hängen seine Absätze in ueber-uns.html an [data-reveal-trigger] (s. main.js).
+   Bewusst auf .about gescoped, damit .about__grid--intro auf der Startseite
    (dort ähnlich hohe Spalten, oben bündig gewollt) unangetastet bleibt. */
 .about .about__grid { align-items: center; }
 
@@ -870,8 +870,17 @@ a.mega-tile:hover { border-color: var(--primary); }
   border-left: 2px solid var(--border-hi);
   transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
-.mobile-menu__sub:hover { color: var(--ink); border-left-color: var(--primary); }
+/* Nur auf Links: die Rechtliches-Zeile ist ein <div> und würde sonst beim
+   Darüberfahren aufleuchten und Klickbarkeit vortäuschen, die sie nicht hat. */
+a.mobile-menu__sub:hover { color: var(--ink); border-left-color: var(--primary); }
 .mobile-menu__sub--all { color: var(--primary); }
+/* Rechtliches: Label-Zeile mit Impressum/Datenschutz darunter - gleiche
+   Gruppierung wie die Desktop-Kachel .mega-tile--legal. Die Links holen sich
+   ihre gedämpfte Farbe aus der [aria-disabled]-Regel darunter. */
+.mobile-menu__legal {
+  display: flex; flex-wrap: wrap; gap: 0.1rem 0.9rem;
+  margin-top: 0.2rem; font-size: var(--fs-small);
+}
 .mobile-menu [aria-disabled="true"] { cursor: default; color: var(--muted); }
 
 /* Cross-page Hash-Sprünge (z.B. leistungen.html#leistung-tiefbau) nicht unter dem fixen Header landen lassen */
@@ -1046,6 +1055,17 @@ a.mega-tile:hover { border-color: var(--primary); }
 /* Ablauf-Seite: interaktiver Block soll kompakter direkt unter dem Seitenkopf sitzen */
 .page-hero + .section.process { padding-top: var(--space-lg); }
 .page-hero:has(+ .section.process) { padding-bottom: var(--space-lg); }
+/* Über-uns-Seite: direkt nach dem Seitenkopf folgt das hohe Portraitfoto. Mit den
+   Standard-Abständen liegen zwischen Header-Unterkante und Foto 165px reines Padding,
+   was den Textblock daneben aus dem ersten Screen schiebt. --space-xl statt --space-2xl
+   im padding-top lässt unter dem 75px hohen Header noch ~37px Luft, der Kopf wirkt also
+   nicht gequetscht. Gescoped über den Folge-Selektor wie bei .process oben, damit
+   leistungen.html/anfrage.html ihre bisherigen Abstände behalten. */
+.page-hero:has(+ .section.about) {
+  padding-top: calc(72px + var(--space-xl));
+  padding-bottom: var(--space-lg);
+}
+.page-hero + .section.about { padding-top: var(--space-lg); }
 /* .section__head hat sonst (z. B. auf der Startseite) margin-bottom: --space-2xl,
    weil danach Grid-Inhalt in DERSELBEN Section folgt. Im .page-hero ist der Kopf
    aber der einzige Inhalt – die Randmarge addiert sich zusätzlich zum eigenen
@@ -1111,11 +1131,25 @@ a.mega-tile:hover { border-color: var(--primary); }
    der Browser ohne definite Breite die Größe der Figure sonst instabil auf
    (zusammen mit aspect-ratio + einem 100%-Bild, das selbst von der Figure
    abhängt) - das machte das Foto kleiner als nötig und ließ .about__name
-   darunter zu wenig verlässlichen Raum. */
-.photo-frame--portrait {
+   darunter zu wenig verlässlichen Raum.
+   Das Seitenverhältnis ist absichtlich nicht das des Originals (3/4): die Höhe
+   ergibt sich allein aus der Spaltenbreite, im Hochformat wurde das Foto mobil
+   477px hoch (57% des Viewports) und schob den Fließtext unter den Fold. Mobil
+   quadratisch, ab 900px 4/5 - object-fit: cover schneidet passend zu, Louis
+   rückt im engeren Ausschnitt sogar näher heran.
+   Zwei Fallstricke, die beide eine Kettung (2 Klassen) nötig machen:
+   1. .photo-frame { padding: var(--space-xl) } im 900px-Block steht später im
+      Stylesheet und würde padding: 0 bei gleicher Spezifität still überschreiben -
+      das Foto saß auf Desktop 40px eingerückt im Rahmen statt randlos.
+   2. display: block statt des geerbten grid + place-content: center. Im Grid ist
+      die Zeilenhöhe inhaltsbasiert, dadurch ist height: 100% am Bild zirkulär und
+      fällt auf auto zurück: object-fit greift nie, das Bild behält sein Original-
+      verhältnis und overflow schneidet nur unten ab statt mittig zu beschneiden. */
+.photo-frame.photo-frame--portrait {
+  display: block;
   width: 100%;
   max-width: 440px;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   padding: 0;
   overflow: hidden;
   border-style: solid;
@@ -1697,6 +1731,10 @@ a.mega-tile:hover { border-color: var(--primary); }
 
   .photo-frame { padding: var(--space-xl); }
   .photo-frame__icon { width: 40px; height: 40px; }
+  /* Zweispaltig ist wieder etwas mehr Hochformat drin als auf Mobile (siehe
+     Kommentar an der Basisregel) - 4/5 statt quadratisch. Gekettet, weil die
+     Basisregel dort ebenfalls 2 Klassen nutzt und sonst gewinnen würde. */
+  .photo-frame.photo-frame--portrait { aspect-ratio: 4 / 5; }
 
   .site-footer__inner { gap: var(--space-xl); }
   .page-hero { padding-bottom: var(--space-xl); }
